@@ -1,0 +1,17 @@
+{
+  "name": "js-applications-october-2020",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./1UNIT-TESTING&MODULES/Lab/test.js",
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^8.2.0"
+  },
+  "scripts": {
+    "start": "node ./1UNIT-TESTING&MODULES/Lab/4.SumOfNumbers.js",
+    "test": "mocha"
+  },
+  "author": "Daniel Atanassov",
+  "license": "MIT"
+}

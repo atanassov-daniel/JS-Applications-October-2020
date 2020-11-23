@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Movies</title>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-app.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use-->
+    <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-auth.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h2 id="sub-header">Please log in!</h2>
+
+    <div id="login-form">
+        <label for="username">Username: </label>
+        <input type="text" id="username">
+        <label for="password">Password:</label>
+        <input type="password" id="password">
+        <button id="login-button">Login</button>
+    </div>
+
+    <ul id="movies"></ul>
+
+    <h2>Movie Details:</h2>
+    <div id="movie-details">Please select a movie</div>
+
+    <script src="auth.js"></script>
+    <script>
+        const baseUrl = "https://my-movies-e283b.firebaseio.com";
+        let moviesElement = document.getElementById("movies");
+        let movieDetailsElement = document.getElementById("movie-details");
+
+        fetch(`${baseUrl}/movies.json`)
+            .then(resp => resp.json())
+            .then(data => {
+                let movieTitlesLI = Object
+                    .keys(data)
+                    .map(key => `<li class="movie-item" data-key="${key}">${data[key].title}</li>`)
+                    .join("");
+                // let arrayMovieTitlesLI = movieTitles.map(title => `<li class="movie-item">${title}</li>`).join("");
+
+                moviesElement.innerHTML = movieTitlesLI;
+                // moviesElement.innerHTML = arrayMovieTitlesLI;
+            })
+            .catch(err => console.log(err));
+
+        moviesElement.addEventListener("click", e => {
+            // console.log(e.target.getAttribute("data-key"));
+            // console.log(e.target.dataset.key);
+            // console.log(e.target); // === <li class="movie-item"></li>
+            // e.currentTarget === <ul id="movies"></ul>
+            // e.currentTarget е целия лист (moviesElement), на който е самия event listener
+            // нас ни интересува кликнатия таргет, т.е. текущия елемент => e.target
+
+            let movieId = e.target.dataset.key;
+
+            fetch(`${baseUrl}/movies/${movieId}.json`)
+                .then(res => res.json())
+                .then(movie => {
+                    // `<div id="title">${movie.title}</div><div id="length">${movie.length}</div>`
+
+                    //`<div id="length">${movie.length}</div>`
+                    //`<div id="actors">${movie.actors}</div>`
+
+                    movieDetailsElement.innerHTML =
+                        `<div id="title"><b>Title: </b>${movie.title}</div><div id="length"><b>Length: </b>${movie.length}</div>`;
+
+                    document.getElementById("movie-details").innerHTML +=
+                        `<ol id="actors"><b>Actors: </b></ol>`;
+                    movie.actors.forEach(actor => document.getElementById("actors").innerHTML +=
+                        `<li>${actor}</li>`);
+
+                    // document.querySelector("ol").appendChild(document.createElement("li"))​
+                    // document.querySelector("ol").innerText = "Actors:"
+
+                })
+        });
+    </script>
+</body>
+
+</html>

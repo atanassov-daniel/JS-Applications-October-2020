@@ -1,0 +1,26 @@
+6. String Builder
+
+JS Advanced Retake Exam - 5 Sept 2017 -> 02.
+https://judge.softuni.bg/Contests/Practice/Index/756#1
+
+
+7.Payment Package
+
+JS Advanced Exam - 18 Mar 2018 -> 02.
+https://judge.softuni.bg/Contests/Practice/Index/974#1
+
+
+7.**Warehouse – Unit Testing
+
+JS Advanced Exam - 19 December 2018 -> 02.
+https://judge.softuni.bg/Contests/Practice/Index/1390#2
+
+
+1.*C# Console
+
+JS-Advanced-3-0-Exercises / Prototype Chain -> 05.
+https://judge.softuni.bg/Contests/Practice/Index/341#4
+
+
+
+------------------------------------------------------

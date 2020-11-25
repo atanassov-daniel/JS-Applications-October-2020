@@ -23,25 +23,38 @@
         <button id="login-button">Login</button>
     </div>
 
-    <ul id="movies"></ul>
+    <div id="add-movie">
+        <label for="title">Title: </label>
+        <input type="text" id="title">
+        <label for="length">Length: </label>
+        <input type="text" id="length">
+        <label for="actor">Actor: </label>
+        <input type="text" id="actor">
+        <label for="image">Image URL: </label>
+        <input type="text" id="image-url">
+        <button id="add-movie-button">Add movie</button>
+    </div>
+
+    <ul id="movies" class="movie-list"></ul>
 
     <h2>Movie Details:</h2>
-    <div id="movie-details">Please select a movie</div>
+    <ul id="movie-details">Please select a movie</ul>
 
     <script src="auth.js"></script>
     <script>
         const baseUrl = "https://my-movies-e283b.firebaseio.com";
-        let moviesElement = document.getElementById("movies");
-        let movieDetailsElement = document.getElementById("movie-details");
+        const moviesElement = document.getElementById("movies");
+        const movieDetailsElement = document.getElementById("movie-details");
+        const addMovieButtonElement = document.getElementById("add-movie-button");
 
         fetch(`${baseUrl}/movies.json`)
             .then(resp => resp.json())
             .then(data => {
-                let movieTitlesLI = Object
+                const movieTitlesLI = Object
                     .keys(data)
                     .map(key => `<li class="movie-item" data-key="${key}">${data[key].title}</li>`)
                     .join("");
-                // let arrayMovieTitlesLI = movieTitles.map(title => `<li class="movie-item">${title}</li>`).join("");
+                // const arrayMovieTitlesLI = movieTitles.map(title => `<li class="movie-item">${title}</li>`).join("");
 
                 moviesElement.innerHTML = movieTitlesLI;
                 // moviesElement.innerHTML = arrayMovieTitlesLI;
@@ -56,7 +69,7 @@
             // e.currentTarget е целия лист (moviesElement), на който е самия event listener
             // нас ни интересува кликнатия таргет, т.е. текущия елемент => e.target
 
-            let movieId = e.target.dataset.key;
+            const movieId = e.target.dataset.key;
 
             fetch(`${baseUrl}/movies/${movieId}.json`)
                 .then(res => res.json())
@@ -65,20 +78,54 @@
 
                     //`<div id="length">${movie.length}</div>`
                     //`<div id="actors">${movie.actors}</div>`
+                    let movieDetailsHtml = Object
+                        .keys(movie)
+                        .map(x => {
+                            if (x === "imageUrl") return;
+                            const keyName = x.replace(x[0], x[0].toUpperCase());
+                            const value = movie[x] instanceof Array ? movie[x].join(", ") : movie[x];
+                            return `<li><b>${keyName}: </b>${value}</li>`;
+                        })
+                        .join("");
 
-                    movieDetailsElement.innerHTML =
-                        `<div id="title"><b>Title: </b>${movie.title}</div><div id="length"><b>Length: </b>${movie.length}</div>`;
+                    movieDetailsHtml += '<br />';
+                    if (movie.imageUrl) movieDetailsHtml +=
+                        `<img src="${movie.imageUrl}" alt="${movie.title}">`;
 
-                    document.getElementById("movie-details").innerHTML +=
-                        `<ol id="actors"><b>Actors: </b></ol>`;
-                    movie.actors.forEach(actor => document.getElementById("actors").innerHTML +=
-                        `<li>${actor}</li>`);
+                    movieDetailsElement.innerHTML = movieDetailsHtml;
+                    // here were the files from the txt file
 
                     // document.querySelector("ol").appendChild(document.createElement("li"))​
                     // document.querySelector("ol").innerText = "Actors:"
-
                 })
         });
+
+        addMovieButtonElement.addEventListener("click", function () {
+            const titleElement = document.getElementById("title");
+            const actorElement = document.getElementById("actor");
+            const imageUrlElement = document.getElementById("image-url");
+
+            const newMovie = {
+                title: titleElement.value,
+                actor: actorElement.value,
+                imageUrl: imageUrlElement.value,
+            }
+
+            fetch(`${baseUrl}/movies.json`, {
+                    method: "POST",
+                    body: JSON.stringify(newMovie)
+                })
+                .then(resp => resp.json())
+                .then(obj => {
+                    const newMovieElement = document.createElement("li");
+                    newMovieElement.innerText = newMovie.title;
+                    newMovieElement.classList.add("movie-item");
+                    newMovieElement.dataset['key'] = obj
+                        .name; // is the key name of the new object in the database
+                    moviesElement.appendChild(newMovieElement);
+                })
+                .catch(err => console.log(err));
+        })
     </script>
 </body>
 

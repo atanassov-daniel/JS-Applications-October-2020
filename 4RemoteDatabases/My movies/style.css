@@ -1,7 +1,11 @@
-.movie-item{
+.movie-item {
     cursor: pointer;
 }
 
-.movie-item:hover{
+.movie-item:hover {
     background-color: bisque;
+}
+
+.movie-list {
+    width: 200px;
 }

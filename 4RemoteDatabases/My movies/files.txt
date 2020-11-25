@@ -1,0 +1,4 @@
+// `<div id="title"><b>Title: </b>${movie.title}</div><div id="length"><b>Length: </b>${movie.length}</div>`;
+
+                    // movieDetailsElement.innerHTML += `<ol id="actors"><b>Actors: </b></ol>`;
+                    // movie.actors.forEach(actor => document.getElementById("actors").innerHTML += `<li>${actor}</li>`);

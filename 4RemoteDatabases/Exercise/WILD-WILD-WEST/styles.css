@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
 canvas {
     cursor: none;
 }
@@ -7,9 +8,12 @@ canvas {
     display: inline-table;
     border: 2px solid lightgray;
     padding: 5px;
+    /* I added the next one */
+    margin: 2px;
 }
 
-.play, .delete {
+.play,
+.delete {
     width: 95%;
     padding: 0 5px 0 5px;
 }

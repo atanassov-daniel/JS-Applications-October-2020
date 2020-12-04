@@ -79,6 +79,8 @@ function attachEvents() {
             const saveButton = document.querySelector("#save");
             const reloadButton = document.querySelector("#reload");
 
+            saveButton.dispatchEvent(new MouseEvent("click"));
+
             canvas.style.display = "block";
             saveButton.style.display = "block";
             reloadButton.style.display = "block";
@@ -104,6 +106,11 @@ function attachEvents() {
                 let [, moneyDiv, bulletsDiv] = document.querySelector(`div.player#${playerKey}`).querySelectorAll("div");
                 moneyDiv.innerText = `Money: ${player.money}`;
                 bulletsDiv.innerText = `Bullets: ${player.bullets}`;
+            });
+
+            reloadButton.addEventListener("click", (e) => {
+                player.money -= 60;
+                player.bullets = 6;
             });
         };
 

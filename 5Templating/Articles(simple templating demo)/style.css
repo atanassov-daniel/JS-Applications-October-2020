@@ -1,0 +1,21 @@
+body {
+    font-family: monospace;
+    font-size: 20px;
+}
+
+.site-wrapper {
+    width: 800px;
+    margin: auto;
+}
+
+.article-item section {
+    font-style: italic;
+}
+
+.article-item header h3 {
+    text-decoration: underline dashed; /* за подчертаването */
+}
+
+.sponsored-article {
+    background-color: aqua;
+}

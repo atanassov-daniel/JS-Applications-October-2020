@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Articles</title>
+    <link rel="stylesheet" href="./style.css">
+    <!-- 1. <script src="node_modules/handlebars/dist/handlebars.js"></script> -->
+    <!-- 2. <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script> -->
+    <!-- връща малко по-различни неща -->
+</head>
+
+<body>
+    <div class="site-wrapper">
+        <h1>Articles</h1>
+
+        <div id="articles">
+
+        </div>
+    </div>
+
+    <script type="module">
+        import createArticle from './create-article.js';
+        import articles from './articles.js';
+
+        import Handlebars from 'https://jspm.dev/handlebars' // 3. 
+        
+        
+
+
+        const articlesListElement = document.getElementById('articles');
+
+        let articlesHTML = articles.map(articleObj => createArticle(articleObj)).join('');
+
+        articlesListElement.innerHTML = articlesHTML;
+    </script>
+</body>
+
+</html>
+
+<!--
+        <div id="articles">
+            <article>
+                <header>
+                    <h3>Some title</h3>
+                </header>
+
+                <section>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam ducimus voluptatum ratione,
+                        quaerat sed dolore totam perspiciatis tenetur ea saepe?</p>
+                </section>
+
+                <footer>
+                    <p>Author: Dragan Cankov</p>
+                </footer>
+            </article>
+
+            <article>
+                <header>
+                    <h3>Some title</h3>
+                </header>
+
+                <section>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam ducimus voluptatum ratione,
+                        quaerat sed dolore totam perspiciatis tenetur ea saepe?</p>
+                </section>
+
+                <footer>
+                    <p>Author: Dragan Cankov</p>
+                </footer>
+            </article>
+
+            <article>
+                <header>
+                    <h3>Some title</h3>
+                </header>
+
+                <section>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam ducimus voluptatum ratione,
+                        quaerat sed dolore totam perspiciatis tenetur ea saepe?</p>
+                </section>
+
+                <footer>
+                    <p>Author: Dragan Cankov</p>
+                </footer>
+            </article>
+
+            <article>
+                <header>
+                    <h3>Some title</h3>
+                </header>
+
+                <section>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam ducimus voluptatum ratione,
+                        quaerat sed dolore totam perspiciatis tenetur ea saepe?</p>
+                </section>
+
+                <footer>
+                    <p>Author: Dragan Cankov</p>
+                </footer>
+            </article>
+
+            <article>
+                <header>
+                    <h3>Some title</h3>
+                </header>
+
+                <section>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam ducimus voluptatum ratione,
+                        quaerat sed dolore totam perspiciatis tenetur ea saepe?</p>
+                </section>
+
+                <footer>
+                    <p>Author: Dragan Cankov</p>
+                </footer>
+            </article>
+        </div>
+        -->

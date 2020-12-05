@@ -19,33 +19,30 @@
         </div>
     </div>
 
-    <script id="article-template" type="text/x-handlebars-template">
-        <article class="article-item">
-            <header>
-                <h3>{{title}}</h3>
-            </header>
-
-            <section>
-                <p>{{body}}</p>
-            </section>
-
-            {{#if author}}
-                <footer>
-                    <p>Author: {{author}}</p>
-                </footer>
-            {{/if}}
-        </article>
-    </script>
-
     <script type="module">
         import articles from './articles.js';
 
-        const { compile } = Handlebars;
+        // дефинираме си самия html в чист стринг
+        const articleView = `
+            <article class="article-item">
+                <header>
+                    <h3>{{title}}</h3>
+                </header>
 
-        const articleView = document.getElementById("article-template").innerHTML;
+                <section>
+                    <p>{{body}}</p>
+                </section>
+
+                {{#if author}}
+                    <footer>
+                        <p>Author: {{author}}</p>
+                    </footer>
+                {{/if}}
+            </article>
+        `;
 
         // самия template си го създаваме чрез Handlebars.compile(html)
-        const articleTemplate = compile(articleView);
+        const articleTemplate = Handlebars.compile(articleView);
         // ще вземе стринга с html-a, ще го компилира и ще създаде template(-> функция, която очаква да и се подадат данни и ще генерира готов html) - > тази функция идва с помощта на Handlebars.compile(html)
 
         const articlesListElement = document.getElementById('articles');

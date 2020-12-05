@@ -1,7 +1,7 @@
 export default [{
     title: "First Article",
     body: "1 Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur, ab?",
-    author: "Ivan Petrov"
+    // author: "Ivan Petrov"
 }, {
     title: "Second Article",
     body: "2 Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur, ab?",

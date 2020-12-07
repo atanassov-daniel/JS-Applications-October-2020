@@ -9,19 +9,24 @@
 </head>
 
 <body>
+    <!-- {{else}}<i>(empty)<i> -->
+    <script type="text/x-handlebars-template" id="town-template">
+        <ul> 
+            {{#each this}}
+            {{#if this}}
+                <li>{{this}}</li>
+            {{/if}}
+            {{/each}}
+        </ul> 
+    </script>
+
     <form action="#" class="content">
         <label for="towns">Towns</label>
         <input id="towns" type="text" />
         <button id="btnLoadTowns">Load</button>
     </form>
-    <div id="root">
-        <ul>
-            <li>Sofiq</li>
-            <li>Plovdiv</li>
-            <li>Varna</li>
-            <li>Burgas</li>
-        </ul>
-    </div>
+
+    <div id="root"></div>
 </body>
 <script src="./app.js"></script>
 

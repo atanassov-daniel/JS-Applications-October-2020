@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History 1</title>
+</head>
+
+<body>
+    <h1>Hello World</h1>
+
+    <div id="root"></div>
+
+    <button id="change">Change</button>
+
+    <script>
+        window.addEventListener("popstate", e => {
+            console.log(history.state);
+        })
+
+        document.getElementById("change").addEventListener("click", e => {
+            history.pushState({
+                number: history.length
+            }, "", `page-${history.length}`)
+        });
+
+        // => #-a няма да се сложи с този трик
+    </script>
+</body>
+
+</html>

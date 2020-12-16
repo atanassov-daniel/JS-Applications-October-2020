@@ -12,15 +12,13 @@
                     <label class="form-control-label" for="new-make">Make</label>
                     <input class="form-control" id="new-make" type="text">
                 </div>
-                <div class="form-group has-success">
+                <div class="form-group">
                     <label class="form-control-label" for="new-model">Model</label>
-                    <input class="form-control is-valid" id="new-model" type="text">
-                    <div class="form-control-feedback">This input value is valid</div>
+                    <input class="form-control" id="new-model" type="text">
                 </div>
-                <div class="form-group has-danger">
+                <div class="form-group">
                     <label class="form-control-label" for="new-year">Year</label>
-                    <input class="form-control is-invalid" id="new-year" type="number">
-                    <div class="form-control-feedback">This input value is invalid</div>
+                    <input class="form-control" id="new-year" type="number">
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="new-description">Description</label>
@@ -40,8 +38,22 @@
                     <label class="form-control-label" for="new-material">Material (optional)</label>
                     <input class="form-control" id="new-material" type="text">
                 </div>
-                <input type="submit" class="btn btn-primary" value="Create" />
+                <input type="submit" class="btn btn-primary" value="Create"
+                    onclick="validateInputFieldsCreateFurniture(event)" />
             </div>
         </div>
     </form>
 </div>
+
+<!--
+<div class="form-group has-success">
+    <label class="form-control-label" for="new-model">Model</label>
+    <input class="form-control is-valid" id="new-model" type="text">
+    <div class="form-control-feedback">This input value is valid</div>
+</div>
+<div class="form-group has-danger">
+    <label class="form-control-label" for="new-year">Year</label>
+    <input class="form-control is-invalid" id="new-year" type="number">
+    <div class="form-control-feedback">This input value is invalid</div>
+</div>
+-->

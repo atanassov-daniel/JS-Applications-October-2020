@@ -8,8 +8,6 @@ export default {
             const validHTML = `<div class="form-control-feedback" style="background-color: palegreen;">This input value is valid</div>`;
             const invalidHTML = `<div class="form-control-feedback" style="background-color: red;">This input value is invalid</div>`;
 
-            // const isValid = currentItemValidity;
-            // const inputElement = inputEl;
             const parentDivFormGroup = inputEl.parentElement;
             if (parentDivFormGroup.querySelector(".form-control-feedback")) parentDivFormGroup.querySelector(".form-control-feedback").remove();
 
@@ -30,7 +28,7 @@ export default {
 
 
         const makeInputValue = document.getElementById("new-make").value;
-        if (makeInputValue.length >= 4) validityHandler(document.getElementById("new-make"), true)
+        if (makeInputValue.length >= 4) validityHandler(document.getElementById("new-make"), true);
         else validityHandler(document.getElementById("new-make"), false);
 
 
@@ -64,8 +62,8 @@ export default {
         if (descriptionInputValue.length <= 10) allValid = false;
         const priceInputValue = document.getElementById("new-price").value;
         if (priceInputValue < 0) allValid = false; // but should 0 be included or not
-        const imageUrlInputValue = document.getElementById("new-image").value;
-        if (imageUrlInputValue.trim() === "") allValid = false;
+        const imageURLInputValue = document.getElementById("new-image").value;
+        if (imageURLInputValue.trim() === "") allValid = false;
         const materialInputValue = document.getElementById("new-material").value;
         // if everything is ok, what message should I show before redirecting to all
         if (allValid === true) {

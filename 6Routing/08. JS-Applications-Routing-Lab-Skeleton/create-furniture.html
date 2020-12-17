@@ -57,3 +57,19 @@
     <div class="form-control-feedback">This input value is invalid</div>
 </div>
 -->
+
+<!--
+document.querySelector("form").querySelectorAll(".col-md-4")[1].innerHTML += `
+<div class="form-group has-success">
+    <label class="form-control-label" for="new-model">Model</label>
+    <input class="form-control is-valid" id="new-model" type="text">
+    <div class="form-control-feedback">This input value is valid</div>
+</div>`;
+
+document.querySelector("form").querySelectorAll(".col-md-4")[1].innerHTML += `
+<div class="form-group has-danger">
+    <label class="form-control-label" for="new-year">Year</label>
+    <input class="form-control is-invalid" id="new-year" type="number">
+    <div class="form-control-feedback">This input value is invalid</div>
+</div>`;
+-->

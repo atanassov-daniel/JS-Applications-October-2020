@@ -12,9 +12,12 @@ Object.keys(helpers).forEach(key => window[key] = helpers[key]); // put the help
 `;
 
     const createFurnitureHTML = await (await fetch("./create-furniture.html")).text();
-    const allFurnitureHTML = await (await fetch("./allFurniture.html")).text();
+    // const allFurnitureHTML = await (await fetch("./allFurniture.html")).text();
     const furnitureDetailsHTML = await (await fetch("./furnitureDetails.html")).text();
     const myFurnitureHTML = await (await fetch("./myFurniture.html")).text();
+
+    const htmlTemplateAllFurniture = await (await fetch("./allFurniture.hbs")).text();
+    const templateAllFurniture = Handlebars.compile(htmlTemplateAllFurniture);
 
     const router = {
         "": defaultPageHtml,
@@ -22,8 +25,10 @@ Object.keys(helpers).forEach(key => window[key] = helpers[key]); // put the help
         "#/": defaultPageHtml,
         "#/create": createFurnitureHTML,
         "#/create/": createFurnitureHTML,
-        "#/all": allFurnitureHTML,
-        "#/all/": allFurnitureHTML,
+        // "#/all": allFurnitureHTML,
+        "#/all": templateAllFurniture(await (await fetch(`https://js-apps-dbs-default-rtdb.firebaseio.com/furniture/.json`)).json()),
+        // "#/all/": allFurnitureHTML,
+        "#/all/": templateAllFurniture(await (await fetch(`https://js-apps-dbs-default-rtdb.firebaseio.com/furniture/.json`)).json()),
         "#/details/1": furnitureDetailsHTML,
         "#/details/1/": furnitureDetailsHTML,
         "#/mine": myFurnitureHTML,
@@ -31,7 +36,7 @@ Object.keys(helpers).forEach(key => window[key] = helpers[key]); // put the help
         "#/delete/1": "<h3>Delete{1} Page...</h3>",
         "#/delete/1/": "<h3>Delete{1} Page...</h3>",
     };
-
+// [...document.querySelectorAll(".col-md-4")].forEach(el=>el.style.padding="12px")
     const navigate = () => {
         if (location.hash !== "" && location.hash !== "#" && location.hash !== "#/") {
             document.getElementById("container").innerHTML = router[location.hash] || "<h2>404 Not Found</h2>";

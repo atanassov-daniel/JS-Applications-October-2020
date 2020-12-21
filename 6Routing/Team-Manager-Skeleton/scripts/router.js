@@ -15,13 +15,15 @@ const router = (routes, hash) => {
         const currentRoutePossibilities = routes[currentRouteName]; // an array with all possible URLs
         if (currentRoutePossibilities.includes(hash)) return currentRouteName;
     }
+
+    return null;
     // if (routes.home.includes(hash)) { // home} else if (routes.about.includes(hash)) {}
 };
 
 // const hash = location.hash;
 // const page = router(routes, hash);
 
-window.addEventListener("hashchange", (e) => console.log(router(routes, location.hash)));
+window.addEventListener("hashchange", (e) => console.log(router(routes, location.hash))); // when the route is invalid, this will be undefined
 
 // export { routes, page};
 const navigate = () => {

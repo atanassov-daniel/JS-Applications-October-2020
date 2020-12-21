@@ -1,22 +1,87 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="css/index.css">
-    <link rel="stylesheet" type="text/css" href="css/team.css">
-    <link rel="stylesheet" type="text/css" href="css/details.css">
-    <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="../node_modules/handlebars/dist/handlebars.min.js"></script>
-    <script type="module" src="scripts/app.js"></script>
-    <title>Team Managers App</title>
-  </head>
-  <body>
-    <div id="infoBox" class="notification" disabled></div>
-    <div id="errorBox" class="notification" disabled></div>
-    <div id="main">
 
-    </div>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="css/index.css">
+  <link rel="stylesheet" type="text/css" href="css/team.css">
+  <link rel="stylesheet" type="text/css" href="css/details.css">
+  <!-- the old can be found in the commit from 19-Dec-2020--20:32 -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-auth.js"></script>
+  <script src="./scripts/firebaseConfig.js"></script>
+  <title>Team Managers App</title>
+</head>
+
+<body>
+  <div id="infoBox" class="notification" disabled></div>
+  <div id="errorBox" class="notification" disabled></div>
+  <div id="main"></div>
+
+  <script>
+    const reg = async function () {
+      let respHeader = await fetch("../templates/common/header.hbs");
+      // let respHeader = await fetch("./templates/common/header.hbs");
+      let headerTemplateHtml = await respHeader.text();
+      let respFooter = await fetch("../templates/common/footer.hbs");
+      // let respFooter = await fetch("./templates/common/footer.hbs");
+      let footerTemplateHtml = await respFooter.text();
+
+      Handlebars.registerPartial("header", headerTemplateHtml);
+      Handlebars.registerPartial("footer", footerTemplateHtml);
+    };
+
+    const home = async () => {
+      await reg();
+
+      let respHome = await fetch("../templates/home/home.hbs");
+      let homeTemplateHtml = await respHome.text();
+      const templateHome = Handlebars.compile(homeTemplateHtml);
+
+      const homePageInnerHtml = templateHome({
+        loggedIn: false,
+        username: "John Doe",
+        hasTeam: true,
+        teamId: "-Mqdu45emdfdvjifv"
+      });
+
+      document.getElementById("main").innerHTML = homePageInnerHtml;
+    };
+
+    (async function () {
+      await home();
+    })();
+  </script>
+
+  <!-- <script src="./scripts/header.js"></script> -->
+  <script src="./scripts/router.js"></script>
+
+
+
+
+
+  <script>
+    const func = async () => {
+      let resp = await fetch(`https://js-apps-dbs-default-rtdb.firebaseio.com/teams/.json`, {
+        method: "POST",
+        body: JSON.stringify({
+          "name": "1",
+          "comment": "first",
+          "_creator": "uid1"
+        })
+      });
+
+      console.log(await resp.json());
+    }
+  </script>
+
+  <script type="module" src="./scripts/app.js"></script>
+</body>
+
 </html>

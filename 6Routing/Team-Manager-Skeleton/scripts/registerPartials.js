@@ -1,10 +1,10 @@
-export const reg = async () => {
-    let respHeader = await fetch("../templates/common/header.hbs");
-    // let respHeader = await fetch("./templates/common/header.hbs");
-    let headerTemplateHtml = await respHeader.text();
-    let respFooter = await fetch("../templates/common/footer.hbs");
-    // let respFooter = await fetch("./templates/common/footer.hbs");
-    let footerTemplateHtml = await respFooter.text();
+export default async () => { // export const registerPartials = async () => {
+    const respHeader = await fetch("../templates/common/header.hbs");
+    // const respHeader = await fetch("./templates/common/header.hbs");
+    const headerTemplateHtml = await respHeader.text();
+    const respFooter = await fetch("../templates/common/footer.hbs");
+    // const respFooter = await fetch("./templates/common/footer.hbs");
+    const footerTemplateHtml = await respFooter.text();
 
     Handlebars.registerPartial("header", headerTemplateHtml);
     Handlebars.registerPartial("footer", footerTemplateHtml);

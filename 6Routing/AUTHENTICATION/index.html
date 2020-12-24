@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Authentication</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyAqy7FUtrB3wT0AdDx2tOVMKF8PHwEVlfc",
+      authDomain: "js-apps-dbs.firebaseapp.com",
+      databaseURL: "https://js-apps-dbs-default-rtdb.firebaseio.com",
+      projectId: "js-apps-dbs",
+      storageBucket: "js-apps-dbs.appspot.com",
+      messagingSenderId: "145502137288",
+      appId: "1:145502137288:web:d944aaa7558b0bc59c2efd"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+</head>
+
+<body>
+  <center>
+    <form id="loginForm" style="display: none">
+      <input type="email" placeholder="Email..." /><br />
+      <input type="password" placeholder="Password..." /><br />
+      <button id="signin">Sign in</button><br />
+      <!-- Don't have account?<button class="switch" id="switch-to-signup">Sign up now</button><br /> -->
+    </form>
+
+    <form id="registerForm" style="display: none">
+      <input type="email" placeholder="Email..." /><br />
+      <input type="password" placeholder="Password..." /><br />
+      <input type="password" placeholder="Confirm Password..." /><br />
+      <!-- Already have account?<button class="switch" id="switch-to-signin">Sign in now</button><br /> -->
+      <button id="signup">Sign up</button>
+    </form>
+
+    <form id="logoutForm" style="display: none">
+      <span id="welcome">Welcome email</span><br />
+      <button id="signout">Sign out</button>
+    </form>
+  </center>
+
+  <div class="notifications" id="notifications"></div>
+
+  <script src="./app.js" type="module"></script>
+</body>
+
+</html>

@@ -20,10 +20,12 @@ const router = (routes, hash) => {
     // if (routes.home.includes(hash)) { // home} else if (routes.about.includes(hash)) {}
 };
 
+export { routes, router };
+
 // const hash = location.hash;
 // const page = router(routes, hash);
 
-window.addEventListener("hashchange", (e) => console.log(router(routes, location.hash))); // when the route is invalid, this will be undefined
+/* window.addEventListener("hashchange", (e) => console.log(router(routes, location.hash))); // when the route is invalid, this will be undefined */
 
 // export { routes, page};
 const navigate = () => {

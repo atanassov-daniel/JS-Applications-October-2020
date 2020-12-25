@@ -1,12 +1,4 @@
-const authObject = {
-    loggedIn: true,
-    username: "John Doe",
-    hasTeam: true,
-    teamId: "-Mqdu45emdfdvjifv"
-};
-
-
-const regPartial = async (partialName, path) => {
+const registerPartial = async (partialName, path) => {
     const partialHtml = await fileFetch(path);
     Handlebars.registerPartial(`${partialName}`, partialHtml);
 };
@@ -26,65 +18,62 @@ const pageHtml = async (path, authObject) => {
 };
 
 const registerHeaderAndFooter = async () => {
-    await regPartial("header", "../templates/common/header.hbs");
-    await regPartial("footer", "../templates/common/footer.hbs");
+    await registerPartial("header", "../templates/common/header.hbs");
+    await registerPartial("footer", "../templates/common/footer.hbs");
 };
 
-
-
-
-
-export default {
-    async home() {
+const generatePages = {
+    async home(obj) {
         await registerHeaderAndFooter();
-        const homePageHTML = await pageHtml("../templates/home/home.hbs", authObject);
+        const homePageHTML = await pageHtml("../templates/home/home.hbs", obj);
         return homePageHTML;
     },
-    async about() {
+    async about(obj) {
         await registerHeaderAndFooter();
-        const aboutPageHTML = await pageHtml("../templates/about/about.hbs", authObject);
+        const aboutPageHTML = await pageHtml("../templates/about/about.hbs", obj);
         return aboutPageHTML;
     },
-    async create() {
+    async create(obj) {
         await registerHeaderAndFooter();
-        await regPartial("createForm", "../templates/create/createForm.hbs");
-        const createPageHTML = await pageHtml("../templates/create/createPage.hbs", authObject);
+        await registerPartial("createForm", "../templates/create/createForm.hbs");
+        const createPageHTML = await pageHtml("../templates/create/createPage.hbs", obj);
         return createPageHTML;
     },
-    async edit() {
+    async edit(obj) {
         await registerHeaderAndFooter();
-        await regPartial("editForm", "../templates/edit/editForm.hbs");
-        const editPageHTML = await pageHtml("../templates/edit/editPage.hbs", authObject);
+        await registerPartial("editForm", "../templates/edit/editForm.hbs");
+        const editPageHTML = await pageHtml("../templates/edit/editPage.hbs", obj);
         return editPageHTML;
     },
-    async login() {
+    async login(obj) {
         await registerHeaderAndFooter();
-        await regPartial("loginForm", "../templates/login/loginForm.hbs");
-        const loginPageHTML = await pageHtml("../templates/login/loginPage.hbs", authObject);
+        await registerPartial("loginForm", "../templates/login/loginForm.hbs");
+        const loginPageHTML = await pageHtml("../templates/login/loginPage.hbs", obj);
         return loginPageHTML;
     },
-    async register() {
+    async register(obj) {
         await registerHeaderAndFooter();
-        await regPartial("registerForm", "../templates/register/registerForm.hbs");
-        const registerPageHTML = await pageHtml("../templates/register/registerPage.hbs", authObject);
+        await registerPartial("registerForm", "../templates/register/registerForm.hbs");
+        const registerPageHTML = await pageHtml("../templates/register/registerPage.hbs", obj);
         return registerPageHTML;
     },
-    async catalog1() {
+    async catalog1(obj) {
         // for teamCatalog -> team
         await registerHeaderAndFooter();
-        await regPartial("team", "../templates/catalog/team.hbs");
-        const teamCatalogPageHTML = await pageHtml("../templates/catalog/teamCatalog.hbs", authObject);
+        await registerPartial("team", "../templates/catalog/team.hbs");
+        const teamCatalogPageHTML = await pageHtml("../templates/catalog/teamCatalog.hbs", obj);
         return teamCatalogPageHTML;
     },
-    async catalog2() { // catalog2: async function () {
+    async catalog2(obj) { // catalog2: async function () {
         // for details -> teamMember, teamControls
         await registerHeaderAndFooter();
-        await regPartial("teamMember", "../templates/catalog/teamMember.hbs");
-        await regPartial("teamControls", "../templates/catalog/teamControls.hbs");
-        const detailsPageHTML = await pageHtml("../templates/catalog/details.hbs", authObject);
+        await registerPartial("teamMember", "../templates/catalog/teamMember.hbs");
+        await registerPartial("teamControls", "../templates/catalog/teamControls.hbs");
+        const detailsPageHTML = await pageHtml("../templates/catalog/details.hbs", obj);
         return detailsPageHTML;
     },
 };
 
-// const obj = {catalog1: {partials: {    name,    path},pages: {    path,    objectArgument}},catalog2: {}};
+export default generatePages;
+
 // const generatePages (pageToBeGenerated) { home: f, about: f }

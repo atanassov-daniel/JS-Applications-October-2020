@@ -28,9 +28,9 @@ export { routes, router };
 /* window.addEventListener("hashchange", (e) => console.log(router(routes, location.hash))); // when the route is invalid, this will be undefined */
 
 // export { routes, page};
-const navigate = () => {
+/* const navigate = () => {
     // document.querySelector("div#main").innerHTML;
-};
+}; */
 
 // export default page;
 

@@ -1,3 +1,7 @@
+import {
+    logOut
+} from "./auth.js";
+
 const registerPartial = async (partialName, path) => {
     const partialHtml = await fileFetch(path);
     Handlebars.registerPartial(`${partialName}`, partialHtml);
@@ -72,6 +76,10 @@ const generatePages = {
         const detailsPageHTML = await pageHtml("../templates/catalog/details.hbs", obj);
         return detailsPageHTML;
     },
+    async logout() {
+        logOut();
+        // location.hash = "#/home/";
+    }
 };
 
 export default generatePages;

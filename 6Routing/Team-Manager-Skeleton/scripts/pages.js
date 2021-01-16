@@ -61,7 +61,7 @@ const generatePages = {
         const registerPageHTML = await pageHtml("../templates/register/registerPage.hbs", obj);
         return registerPageHTML;
     },
-    async catalog1(obj) {
+    async catalog(obj) {
         // for teamCatalog -> team
         await registerHeaderAndFooter();
         await registerPartial("team", "../templates/catalog/team.hbs");

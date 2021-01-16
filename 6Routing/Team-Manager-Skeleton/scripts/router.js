@@ -1,6 +1,8 @@
 const routes = {
     home: ["#/home", "#/home/", "#", "#/", ""],
     about: ["#/about", "#/about/"],
+    create: ["#/create", "#/create/"],
+    edit: ["#/edit", "#/edit/"],
     catalog: ["#/catalog", "#/catalog/"],
     logout: ["#/logout", "#/logout/"],
     login: ["#/login", "#/login/"],

@@ -63,7 +63,33 @@
 
   <!-- <script src="./scripts/router.js"></script> -->
 
+  <script>
+    /*     async function get() {
+      const resp = await fetch("https://js-apps-dbs-default-rtdb.firebaseio.com/users/.json");
+      const users = await resp.json();
+      console.log(Object.keys(users).length);
 
+      return users.length;
+    }
+
+    async function post() {
+      const index = await get();
+      console.log(index);
+
+      const resp = await fetch("https://js-apps-dbs-default-rtdb.firebaseio.com/users/.json", {
+        method: "PATCH",
+        body: JSON.stringify({
+          [index]: "hey"
+        })
+      });
+      const user = await resp.json();
+      console.log(user);
+    }
+    post();
+
+    fetch("https://js-apps-dbs-default-rtdb.firebaseio.com/test/.json").then(resp => resp.json()).then(users => console
+      .log(users)); */
+  </script>
 
 
 
@@ -72,9 +98,9 @@
       let resp = await fetch(`https://js-apps-dbs-default-rtdb.firebaseio.com/teams/.json`, {
         method: "POST",
         body: JSON.stringify({
-          "name": "1",
-          "comment": "first",
-          "_creator": "uid1"
+          "name": "2",
+          "comment": "second",
+          "_creator": "uid2"
         })
       });
 

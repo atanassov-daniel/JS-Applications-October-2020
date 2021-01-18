@@ -1,0 +1,8 @@
+<div class="container">
+    {{> header}}
+    <h1>Hmmmm... We're sorry, but you can't view this page because you don't have the required permissions.</h1>
+    <button class="btn btn-default" onclick="(function() {
+    console.log('Unauthorized');
+    location.hash = '#/home/'; })()">Go To Home</button>
+</div>
+{{> footer}}

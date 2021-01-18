@@ -68,7 +68,7 @@ const generatePages = {
         const teamCatalogPageHTML = await pageHtml("../templates/catalog/teamCatalog.hbs", obj);
         return teamCatalogPageHTML;
     },
-    async catalog2(obj) { // catalog2: async function () {
+    async details(obj) { // catalog2: async function () {
         // for details -> teamMember, teamControls
         await registerHeaderAndFooter();
         await registerPartial("teamMember", "../templates/catalog/teamMember.hbs");
@@ -79,6 +79,11 @@ const generatePages = {
     async logout() {
         logOut();
         // location.hash = "#/home/";
+    },
+    async unauthorized() {
+        await registerHeaderAndFooter();
+        const unauthorizedPageHTML = await pageHtml("../templates/common/unauthorized.hbs");
+        return unauthorizedPageHTML;
     }
 };
 

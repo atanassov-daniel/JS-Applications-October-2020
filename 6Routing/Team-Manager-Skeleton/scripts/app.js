@@ -51,7 +51,7 @@ import {
     const checkIfHasTeam = async (username) => {
         const resp = await fetch(`https://js-apps-dbs-default-rtdb.firebaseio.com/usersTeams/${username}.json`);
         const teamKey = await resp.json();
-        
+
         // if (teamKey === null) return { hasTeam: false };
         if (teamKey === null) return false;
         return true;
@@ -85,8 +85,20 @@ import {
         return output;
     };
 
+    const authPages = ["create", "edit", "catalog", "details"];
+
     const navigate = async (page) => { // , authObj
         const objAuth = await authObject();
+
+        /* objAuth.isAuthPage = false;
+        for (const authPage of authPages) {
+            if (page.includes(authPage)) objAuth.isAuthPage = true; // if the page is one of the authorized ones
+        }
+        if (objAuth.isAuthPage && objAuth.loggedIn == false) page = "unauthorized"; */
+
+        // if the page requested is one for authorized users only and the user isn't authorized, load the Unauthorized User warning page
+        if (authPages.includes(page) && objAuth.loggedIn == false) page = "unauthorized";
+
         if (page === "catalog") objAuth.teams = await getTeamsArray();
         // console.log(objAuth);
         const pageHtml = await generatePages[page](objAuth); // generates the html for the page
@@ -94,7 +106,7 @@ import {
     };
     const changePage = async (e) => { // , authObj
         const pageToBeGenerated = router(routes, location.hash); // when the route is invalid, this will be null
-        console.log(pageToBeGenerated);
+        // console.log(pageToBeGenerated);
         await navigate(pageToBeGenerated); // , authObject
     };
 

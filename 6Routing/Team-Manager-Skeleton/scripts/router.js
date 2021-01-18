@@ -8,6 +8,7 @@ const routes = {
     login: ["#/login", "#/login/"],
     register: ["#/register", "#/register/"]
 };
+// const authPages = ["create", "edit", "catalog", "details"];
 
 const router = (routes, hash) => {
     const routesNamesArray = Object.keys(routes);
@@ -16,6 +17,10 @@ const router = (routes, hash) => {
         const currentRouteName = routesNamesArray[index];
         const currentRoutePossibilities = routes[currentRouteName]; // an array with all possible URLs
         if (currentRoutePossibilities.includes(hash)) return currentRouteName;
+        /* if (currentRoutePossibilities.includes(hash)) {
+            if (authPages.includes(currentRouteName));
+            return currentRouteName;
+        } */
     }
 
     return null;

@@ -38,8 +38,8 @@ import {
 
         const [teamName, teamComment] = [...document.querySelector('form[action="#/create"]').querySelectorAll('input.form-control')].map(el => el.value);
 
-        if (teamName.trim() === "" || teamComment.trim() === "") {
-            alert("Please fill in all the required fields!");
+        if (teamName.trim() === "") {
+            alert("Please fill in the name field, the comment is optional!");
             return;
         }
 
@@ -50,7 +50,7 @@ import {
                 body: JSON.stringify({
                     _creator: username,
                     name: teamName,
-                    comment: teamComment
+                    comment: teamComment ? teamComment : ""
                 })
             })
             .then(resp => resp.json())
@@ -59,10 +59,9 @@ import {
                         method: "PUT",
                         body: JSON.stringify(obj.name)
                     })
-                    .then(resp => resp.json());
+                    .then(resp => resp.json())
+                    .then(key => location.hash = `#/catalog/`);
                 // .then(data => console.log(data));
-
-                location.hash = `#/catalog/`;
             })
             .catch(error => console.log(error));
     };
@@ -87,9 +86,9 @@ import {
         const teamKey = await resp.json();
 
         // if (teamKey === null) return { hasTeam: false };
-        console.log(teamKey);
-        if (teamKey === null) return false;
-        return true;
+        // console.log(teamKey);
+        if (teamKey === null || teamKey.trim() === "") return false;
+        return teamKey;
         // return { hasTeam: true, teamKey: teamKey };
     };
 
@@ -104,10 +103,18 @@ import {
         }
 
         const hasTeam = await checkIfHasTeam(currentUser ? currentUser.email.replace("@abv.bg", "") : null);
+
         if (hasTeam == false) output.hasNoTeam = true;
         else output.hasNoTeam = false;
-        output.hasTeam = hasTeam;
-        console.log(hasTeam);
+
+        if (hasTeam !== false) {
+            output.hasTeam = true;
+            output.teamId = hasTeam;
+        } else {
+            output.hasTeam = false;
+        }
+
+        // console.log(hasTeam);
         /* const objHasTeam = await checkIfHasTeam();
         if (objHasTeam.hasTeam === false) output.hasNoTeam = true;
         else {

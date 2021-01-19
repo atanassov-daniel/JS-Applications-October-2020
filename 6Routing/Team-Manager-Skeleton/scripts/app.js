@@ -33,26 +33,61 @@ import {
         signIn(username.concat("@abv.bg"), password);
     };
 
+    window.createTeam = (e) => {
+        e.preventDefault();
+
+        const [teamName, teamComment] = [...document.querySelector('form[action="#/create"]').querySelectorAll('input.form-control')].map(el => el.value);
+
+        if (teamName.trim() === "" || teamComment.trim() === "") {
+            alert("Please fill in all the required fields!");
+            return;
+        }
+
+        const username = firebase.auth().currentUser.email.replace("@abv.bg", "");
+
+        fetch(`https://js-apps-dbs-default-rtdb.firebaseio.com/teams/.json`, {
+                method: "POST",
+                body: JSON.stringify({
+                    _creator: username,
+                    name: teamName,
+                    comment: teamComment
+                })
+            })
+            .then(resp => resp.json())
+            .then(obj => {
+                fetch(`https://js-apps-dbs-default-rtdb.firebaseio.com/usersTeams/${username}.json`, {
+                        method: "PUT",
+                        body: JSON.stringify(obj.name)
+                    })
+                    .then(resp => resp.json());
+                // .then(data => console.log(data));
+
+                location.hash = `#/catalog/`;
+            })
+            .catch(error => console.log(error));
+    };
+
+    // this function returns an array of all available teams
     const getTeamsArray = async () => {
         const resp = await fetch(`https://js-apps-dbs-default-rtdb.firebaseio.com/teams/.json`);
         const teams = await resp.json();
         const final = [];
         Object.keys(teams).forEach(key => {
-            const temp = {
+            final.push({
                 ...teams[key],
                 _id: key
-            };
-            final.push(temp);
+            });
         });
         // console.log(final);
         return final;
     };
-    // getTeamsArray();
+
     const checkIfHasTeam = async (username) => {
         const resp = await fetch(`https://js-apps-dbs-default-rtdb.firebaseio.com/usersTeams/${username}.json`);
         const teamKey = await resp.json();
 
         // if (teamKey === null) return { hasTeam: false };
+        console.log(teamKey);
         if (teamKey === null) return false;
         return true;
         // return { hasTeam: true, teamKey: teamKey };
@@ -60,16 +95,19 @@ import {
 
     const authObject = async () => {
         const output = {};
-        output.loggedIn = firebase.auth().currentUser ? true : false;
+        const currentUser = firebase.auth().currentUser;
+        output.loggedIn = currentUser ? true : false;
         if (output.loggedIn) {
             output.username = firebase.auth().currentUser.email.replace("@abv.bg", "");
-
             // const hasTeam = await checkIfHasTeam(output.username);
             // if (hasTeam);
         }
-        const hasTeam = await checkIfHasTeam();
+
+        const hasTeam = await checkIfHasTeam(currentUser ? currentUser.email.replace("@abv.bg", "") : null);
         if (hasTeam == false) output.hasNoTeam = true;
-        else output.hasTeam = hasTeam;
+        else output.hasNoTeam = false;
+        output.hasTeam = hasTeam;
+        console.log(hasTeam);
         /* const objHasTeam = await checkIfHasTeam();
         if (objHasTeam.hasTeam === false) output.hasNoTeam = true;
         else {

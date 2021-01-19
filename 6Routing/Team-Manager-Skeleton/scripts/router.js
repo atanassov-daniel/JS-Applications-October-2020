@@ -17,6 +17,7 @@ const router = (routes, hash) => {
         const currentRouteName = routesNamesArray[index];
         const currentRoutePossibilities = routes[currentRouteName]; // an array with all possible URLs
         if (currentRoutePossibilities.includes(hash)) return currentRouteName;
+        if (hash.includes("details")) return "details";
         /* if (currentRoutePossibilities.includes(hash)) {
             if (authPages.includes(currentRouteName));
             return currentRouteName;
@@ -27,7 +28,10 @@ const router = (routes, hash) => {
     // if (routes.home.includes(hash)) { // home} else if (routes.about.includes(hash)) {}
 };
 
-export { routes, router };
+export {
+    routes,
+    router
+};
 
 // const hash = location.hash;
 // const page = router(routes, hash);

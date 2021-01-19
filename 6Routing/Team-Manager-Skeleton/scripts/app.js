@@ -92,6 +92,27 @@ import {
         // return { hasTeam: true, teamKey: teamKey };
     };
 
+    const getTeamInfo = async (teamKey) => {
+        const resp = await fetch(`https://js-apps-dbs-default-rtdb.firebaseio.com/teams/${teamKey}/.json`);
+        const data = await resp.json();
+        delete data._creator; // it isn't needed where this function will be used
+
+        return data;
+    };
+    const getTeamMembers = async (teamKey) => {
+        const resp = await fetch(`https://js-apps-dbs-default-rtdb.firebaseio.com/usersTeams/.json`);
+        const data = await resp.json(); // usernames and their corresponding teams
+
+        const members = [];
+        Object.keys(data).forEach(username => {
+            // if the user is a member of the team
+            if (data[username] == teamKey) members.push({
+                username: username
+            });
+        });
+        return members;
+    };
+
     const authObject = async () => {
         const output = {};
         const currentUser = firebase.auth().currentUser;
@@ -134,6 +155,7 @@ import {
 
     const navigate = async (page) => { // , authObj
         const objAuth = await authObject();
+        // let objAuth = await authObject();
 
         /* objAuth.isAuthPage = false;
         for (const authPage of authPages) {
@@ -143,6 +165,24 @@ import {
 
         // if the page requested is one for authorized users only and the user isn't authorized, load the Unauthorized User warning page
         if (authPages.includes(page) && objAuth.loggedIn == false) page = "unauthorized";
+
+        // if the user is a member of a team, redirect him to that team
+        if (objAuth.hasTeam == true && location.hash.startsWith("#/catalog")) location.hash = `#/details/:${objAuth.teamId}`; // location.hash !== `#/details/:${objAuth.teamId}`
+
+        if (page === "details") {
+            // const teamKey = location.hash.split("/:")[1];
+            // const teamInfo = await getTeamInfo(teamKey);
+            const {
+                name,
+                comment
+            } = await getTeamInfo(objAuth.teamId);
+            objAuth.comment = comment;
+            objAuth.name = name;
+
+            objAuth.members = await getTeamMembers(objAuth.teamId);
+
+            // console.log(objAuth);
+        }
 
         if (page === "catalog") objAuth.teams = await getTeamsArray();
         // console.log(objAuth);

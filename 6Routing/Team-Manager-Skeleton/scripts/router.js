@@ -2,7 +2,7 @@ const routes = {
     home: ["#/home", "#/home/", "#", "#/", ""],
     about: ["#/about", "#/about/"],
     create: ["#/create", "#/create/"],
-    edit: ["#/edit", "#/edit/"],
+    // edit: ["#/edit", "#/edit/"],
     catalog: ["#/catalog", "#/catalog/"],
     logout: ["#/logout", "#/logout/"],
     login: ["#/login", "#/login/"],
@@ -18,6 +18,7 @@ const router = (routes, hash) => {
         const currentRoutePossibilities = routes[currentRouteName]; // an array with all possible URLs
         if (currentRoutePossibilities.includes(hash)) return currentRouteName;
         if (hash.includes("details")) return "details";
+        if (hash.includes("edit")) return "edit";
         /* if (currentRoutePossibilities.includes(hash)) {
             if (authPages.includes(currentRouteName));
             return currentRouteName;

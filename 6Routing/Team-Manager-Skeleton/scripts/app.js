@@ -65,6 +65,26 @@ import {
             })
             .catch(error => console.log(error));
     };
+    window.leave = () => {
+        // const key = location.hash.replace("#/details/:", "");
+        fetch(`https://js-apps-dbs-default-rtdb.firebaseio.com/usersTeams/${firebase.auth().currentUser.email.replace("@abv.bg", "")}.json`, {
+                method: "PUT",
+                body: JSON.stringify("")
+            })
+            .then(resp => resp.json())
+            .then(key => location.hash = `#/catalog/`);
+    };
+    window.join = () => {
+        const key = location.hash.replace("#/details/:", "");
+
+        fetch(`https://js-apps-dbs-default-rtdb.firebaseio.com/usersTeams/${firebase.auth().currentUser.email.replace("@abv.bg", "")}.json`, {
+                method: "PUT",
+                body: JSON.stringify(key)
+            })
+            .then(resp => resp.json())
+            // .then(key => location.hash = `#/details/:${key}`);
+            .then(key => location.hash = `#/catalog/`);
+    };
 
     // this function returns an array of all available teams
     const getTeamsArray = async () => {
@@ -95,7 +115,7 @@ import {
     const getTeamInfo = async (teamKey) => {
         const resp = await fetch(`https://js-apps-dbs-default-rtdb.firebaseio.com/teams/${teamKey}/.json`);
         const data = await resp.json();
-        delete data._creator; // it isn't needed where this function will be used
+        // delete data._creator; // it isn't needed where this function will be used
 
         return data;
     };
@@ -174,14 +194,30 @@ import {
             // const teamInfo = await getTeamInfo(teamKey);
             const {
                 name,
-                comment
-            } = await getTeamInfo(objAuth.teamId);
+                comment,
+                _creator
+            } = await getTeamInfo(location.hash.replace("#/details/:", "")); // } = await getTeamInfo(objAuth.teamId);
             objAuth.comment = comment;
             objAuth.name = name;
+            // if the current user is the creator of the team
+            if (_creator === objAuth.username) objAuth.isAuthor = true;
+            else objAuth.isAuthor = false;
+            // if the user is a member of the team whose details he is looking at, react accordingly
+            const detailsTeamKey = location.hash.replace("#/details/:", "");
+            if (objAuth.teamId === detailsTeamKey) objAuth.isOnTeam = true;
+            else objAuth.isOnTeam = false;
 
             objAuth.members = await getTeamMembers(objAuth.teamId);
 
+            console.log(objAuth);
             // console.log(objAuth);
+        }
+        if (page === "edit") {
+            const key = location.hash.replace("#/edit/:", "");
+            const teamDetails = await getTeamInfo(key);
+            if(document.querySelector("input#name"))
+            document.querySelector("input#name").value = teamDetails.name;
+            document.querySelector("input#comment").value = teamDetails.comment;
         }
 
         if (page === "catalog") objAuth.teams = await getTeamsArray();

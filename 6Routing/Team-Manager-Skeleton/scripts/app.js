@@ -76,14 +76,29 @@ import {
     };
     window.join = () => {
         const key = location.hash.replace("#/details/:", "");
+        const username = firebase.auth().currentUser.email.replace("@abv.bg", "");
 
-        fetch(`https://js-apps-dbs-default-rtdb.firebaseio.com/usersTeams/${firebase.auth().currentUser.email.replace("@abv.bg", "")}.json`, {
+        fetch(`https://js-apps-dbs-default-rtdb.firebaseio.com/usersTeams/${username}.json`, {
                 method: "PUT",
                 body: JSON.stringify(key)
             })
             .then(resp => resp.json())
             // .then(key => location.hash = `#/details/:${key}`);
-            .then(key => location.hash = `#/catalog/`);
+            .then(key => location.hash = `#/catalog/`); // this will redirect to the details page, if it wat the above example the hash wouldn't change and so the page wouldn't reload to reflect the Join Team change
+    };
+    window.updateTeam = (e) => {
+        e.preventDefault();
+
+        const key = location.hash.replace("#/edit/:", "");
+        fetch(`https://js-apps-dbs-default-rtdb.firebaseio.com/teams/${key}.json`, {
+                method: "PATCH",
+                body: JSON.stringify({
+                    name: document.querySelector("input#name").value,
+                    comment: document.querySelector("input#comment").value
+                })
+            })
+            .then(resp => resp.json())
+            .then(data => location.hash = `#/details/:${key}`);
     };
 
     // this function returns an array of all available teams
@@ -199,25 +214,32 @@ import {
             } = await getTeamInfo(location.hash.replace("#/details/:", "")); // } = await getTeamInfo(objAuth.teamId);
             objAuth.comment = comment;
             objAuth.name = name;
+
+            const detailsTeamKey = location.hash.replace("#/details/:", "");
             // if the current user is the creator of the team
-            if (_creator === objAuth.username) objAuth.isAuthor = true;
+            if (_creator === objAuth.username && objAuth.teamId === detailsTeamKey) objAuth.isAuthor = true;
             else objAuth.isAuthor = false;
             // if the user is a member of the team whose details he is looking at, react accordingly
-            const detailsTeamKey = location.hash.replace("#/details/:", "");
             if (objAuth.teamId === detailsTeamKey) objAuth.isOnTeam = true;
             else objAuth.isOnTeam = false;
 
             objAuth.members = await getTeamMembers(objAuth.teamId);
 
-            console.log(objAuth);
             // console.log(objAuth);
         }
         if (page === "edit") {
             const key = location.hash.replace("#/edit/:", "");
             const teamDetails = await getTeamInfo(key);
-            if(document.querySelector("input#name"))
-            document.querySelector("input#name").value = teamDetails.name;
-            document.querySelector("input#comment").value = teamDetails.comment;
+            const id = setInterval(() => {
+                if (document.querySelector("input#name")) {
+                    document.querySelector("input#name").value = teamDetails.name;
+                    document.querySelector("input#comment").value = teamDetails.comment;
+                    clearInterval(id);
+                }
+            }, 250);
+            if (document.querySelector("input#name") !== null) clearInterval(id);
+            // document.querySelector("input#name").value = teamDetails.name;
+            // document.querySelector("input#comment").value = teamDetails.comment;
         }
 
         if (page === "catalog") objAuth.teams = await getTeamsArray();

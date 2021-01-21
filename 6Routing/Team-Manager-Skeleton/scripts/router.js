@@ -8,7 +8,6 @@ const routes = {
     login: ["#/login", "#/login/"],
     register: ["#/register", "#/register/"]
 };
-// const authPages = ["create", "edit", "catalog", "details"];
 
 const router = (routes, hash) => {
     const routesNamesArray = Object.keys(routes);
@@ -19,38 +18,12 @@ const router = (routes, hash) => {
         if (currentRoutePossibilities.includes(hash)) return currentRouteName;
         if (hash.includes("details")) return "details";
         if (hash.includes("edit")) return "edit";
-        /* if (currentRoutePossibilities.includes(hash)) {
-            if (authPages.includes(currentRouteName));
-            return currentRouteName;
-        } */
     }
 
     return null;
-    // if (routes.home.includes(hash)) { // home} else if (routes.about.includes(hash)) {}
 };
 
 export {
     routes,
     router
 };
-
-// const hash = location.hash;
-// const page = router(routes, hash);
-
-/* window.addEventListener("hashchange", (e) => console.log(router(routes, location.hash))); // when the route is invalid, this will be undefined */
-
-// export { routes, page};
-/* const navigate = () => {
-    // document.querySelector("div#main").innerHTML;
-}; */
-
-// export default page;
-
-
-
-/* const homeRoutes = ["#/home", "", "#/home/", "#/", "#"];
-const aboutRoutes = ["#/about", "#/about/"];
-const catalogRoutes = ["#/catalog", "#/catalog/"];
-// const logoutRoutes = ["#/logout", "#/logout/"];
-const loginRoutes = ["#/login", "#/login/"];
-const registerRoutes = ["#/register", "#/register/"]; */

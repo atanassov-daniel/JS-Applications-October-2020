@@ -1,6 +1,4 @@
-import {
-    logOut
-} from "./auth.js";
+import { logOut } from "./auth.js";
 
 const registerPartial = async (partialName, path) => {
     const partialHtml = await fileFetch(path);

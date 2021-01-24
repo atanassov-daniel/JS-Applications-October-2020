@@ -22,6 +22,7 @@ export function logOut() {
 export function signUp(email, password) {
     auth.createUserWithEmailAndPassword(email, password)
         .then((user) => {
+
             redirectToHome();
 
             fetch(`https://js-apps-dbs-default-rtdb.firebaseio.com/usersTeams/.json`, {

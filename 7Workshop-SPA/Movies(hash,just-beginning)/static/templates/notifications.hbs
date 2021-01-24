@@ -1,0 +1,9 @@
+{{#if success}}
+    <section class="notifications" style="display: none;">
+        <p class="notification-message" id="errorBox">{{message}}</p>
+    </section>
+{{else}}
+    <section class="notifications" style="display: none;background-color:rgba(1, 131, 29, 0.541);">
+        <p class="notification-message" id="successBox">{{message}}</p>
+    </section>
+{{/if}}

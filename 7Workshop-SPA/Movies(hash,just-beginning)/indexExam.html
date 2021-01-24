@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Movies</title>
+    <link rel="icon" type="image/png" href="../static/favicon.ico">
+    <link href="../static/css/site.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use-->
+    <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-auth.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCiSXptCXdJIMJ4wKN51hRSBB7OGbfnO5A",
+            authDomain: "movies-97242.firebaseapp.com",
+            projectId: "movies-97242",
+            storageBucket: "movies-97242.appspot.com",
+            messagingSenderId: "1049525075198",
+            appId: "1:1049525075198:web:278f9e3220a6bd0213f9af"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+</head>
+
+<body>
+    <section class="notifications" style="display: none;">
+        <p class="notification-message" id="errorBox">{{message}}</p>
+    </section>
+    <section class="notifications" style="display: none;background-color:rgba(1, 131, 29, 0.541);">
+        <p class="notification-message" id="successBox">{{message}}</p>
+    </section>
+
+    <div class="container" id="container"></div>
+    <script>
+        (async function () {
+            const html = await (await fetch("./static/templates/login.hbs")).text();
+            const template = Handlebars.compile(html);
+            document.querySelector("div#container").innerHTML = template();
+        })();
+    </script>
+    <script type="module" src="./components/eventHandlers.js"></script>
+</body>
+
+</html>

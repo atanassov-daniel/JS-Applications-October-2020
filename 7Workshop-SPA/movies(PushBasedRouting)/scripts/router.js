@@ -12,9 +12,9 @@ const routes = {
     '/register': 'register-form-template',
     // '/register/': 'register-form-template',
     '/addMovie': 'add-movie-template',
-    '/details': 'movie-details-template',
-    '/editMovie': 'edit-movie-template'
     // '/addMovie/': 'add-movie-template',
+    '/details': 'movie-details-template',
+    '/edit': 'edit-movie-template'
 };
 
 const router = async (path) => { // loads the content corresponding to the current page
@@ -28,7 +28,7 @@ const router = async (path) => { // loads the content corresponding to the curre
     if (path === '/logout') { // log the user out and navigate to the home page
         authService.logout();
 
-        return navigate('/'); // the fucntion will get called and return(stop the execution) so that the function doesn't later return to doing the bottom logic which won't be needed and will lead to an error
+        return navigate('/login'); // the fucntion will get called and return(stop the execution) so that the function doesn't later return to doing the bottom logic which won't be needed and will lead to an error
     } else if (path === '' || path === '/' || path === '/home') {
         templateData.movies = await movieService.getAll();
     } else if (path.startsWith('/details/')) {
@@ -36,10 +36,24 @@ const router = async (path) => { // loads the content corresponding to the curre
         path = '/details';
 
         let movieDetails = await movieService.getOne(key);
+
+        let isCreator = movieService.isCreator(movieDetails._creator);
         /* templateData = {
             ...templateData,
             ...movieDetails
         }; */
+        Object.assign(templateData, movieDetails, {
+            key // this assignt the key and its value too
+        }, {
+            isCreator
+        });
+        console.log(templateData);
+    } else if (path.startsWith('/edit/')) {
+        let key = path.replace('/edit/', '');
+        path = '/edit';
+
+        let movieDetails = await movieService.getOne(key);
+
         Object.assign(templateData, movieDetails, {
             key
         });

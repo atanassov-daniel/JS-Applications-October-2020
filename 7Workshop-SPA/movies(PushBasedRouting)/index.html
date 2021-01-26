@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <title>Movies</title>
     <link rel="icon" type="image/png" href="../static/favicon.ico">
-    <link href="./static/css/site.css" type="text/css" rel="stylesheet">
+    <link href="/static/css/site.css" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script>
-    <script src="scripts/services.js"></script>
-    <script src="scripts/router.js" defer></script>
-    <script src="scripts/init.js" defer></script><!-- init depends on services, so it should be put after it -->
+    <script src="/scripts/services.js"></script>
+    <script src="/scripts/router.js" defer></script>
+    <script src="/scripts/init.js" defer></script><!-- init depends on services, so it should be put after it -->
 
 </head>
 
@@ -214,7 +214,7 @@
             <div class="msg">Maybe this page moved? Got deleted? Is hiding out in quarantine? Never existed in the first place?<p>Let's go <a href="/">home</a> and try from there.</p></div>
         </div>
 
-        <link rel="stylesheet" href="static/css/404.css">
+        <link rel="stylesheet" href="/static/css/404.css">
     </script>
 
     <script type="text/x-handlebars-template" id="movie-card-template">
@@ -246,10 +246,16 @@
                     <h3 class="my-3 ">Movie Description</h3>
                     <p>{{description}}</p>
                     <!-- <a class="btn btn-danger" data-key="{{key}}" onclick="deleteMovie(event)">Delete</a> --> <!-- this one is for the first variant of the deleteMovie function, the bottom variant is better and is for the currently working deleteMovie function -->
-                    <a class="btn btn-danger" onclick="deleteMovie('{{key}}')">Delete</a>
-                    <a class="btn btn-warning" href="/edit/{{key}}">Edit</a>
-                    <a class="btn btn-primary" href="#">Like</a>
-                    <span class="enrolled-span">Liked 1</span>
+                    {{#if isCreator}}
+                        <a class="btn btn-danger" onclick="deleteMovie('{{key}}')">Delete</a>
+                        <a class="btn btn-warning" href="/edit/{{key}}">Edit</a>
+                    {{else}}
+                        {{#if hasLikedAlready}}
+                            <span class="enrolled-span">Liked 1</span>
+                        {{else}}
+                            <a class="btn btn-primary" href="#">Like</a>    
+                        {{/if}}
+                    {{/if}}
                 </div>
             </div>
         </div>
@@ -258,19 +264,19 @@
     <script type="text/x-handlebars-template" id="edit-movie-template">
         {{>navigation-template}}
 
-        <form class="text-center border border-light p-5" action="#" method="">
+        <form id="edit-movie-form" class="text-center border border-light p-5" onsubmit="onEditMovieSubmit(event, '{{key}}')">
             <h1>Edit Movie</h1>
             <div class="form-group">
                 <label for="title">Movie Title</label>
-                <input type="text" class="form-control" placeholder="Movie Title" value="" name="title">
+                <input type="text" class="form-control" placeholder="Movie Title" value="{{title}}" name="title">
             </div>
             <div class="form-group">
                 <label for="description">Movie Description</label>
-                <textarea class="form-control" placeholder="Movie Description..." name="description"></textarea>
+                <textarea class="form-control" placeholder="Movie Description..." name="description">{{description}}</textarea>
             </div>
             <div class="form-group">
                 <label for="imageUrl">Image url</label>
-                <input type="text" class="form-control" placeholder="Image Url" value="" name="imageUrl">
+                <input type="text" class="form-control" placeholder="Image Url" value="{{imageUrl}}" name="imageUrl">
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>

@@ -139,5 +139,21 @@ const movieService = {
         let data = await request(`${databaseUrl}/movies/${key}.json`, 'DELETE');
 
         return data;
+    },
+
+    async editMovie(key, body) {
+        let data = await request(`${databaseUrl}/movies/${key}.json`, 'PATCH', body);
+
+        return data;
+    },
+
+    isCreator(movieCreator) {
+        // let movieCreator = await request(`${databaseUrl}/movies/${key}.json`, 'GET')._creator;
+        let currentUserEmail = authService.getAuthData().email;
+
+        if (movieCreator === currentUserEmail) {
+            return true;
+        }
+        return false;
     }
 };

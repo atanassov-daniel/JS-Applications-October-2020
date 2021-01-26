@@ -35,7 +35,7 @@ function navigateHandler(e) {
     // navigate(url.pathname.slice(1)); // so that the path is without the '/' at the beginnning
 }
 
-const validateInput = (...values) => {
+const validateInputFieldsAreNotEmpty = (...values) => {
     for (const value of values) {
         if (value.trim() === '') {
             alert("Please fill in all the required fields!");
@@ -53,7 +53,7 @@ function onLoginSubmit(e) {
     let email = formData.get('email');
     let password = formData.get('password');
 
-    let isValid = validateInput(email, password);
+    let isValid = validateInputFieldsAreNotEmpty(email, password);
     if (isValid === false) return;
 
     authService.login(email, password)
@@ -67,11 +67,16 @@ function onAddMovieSubmit(e) {
 
     let [title, description, imageUrl] = [...document.getElementById('add-movie-form').querySelectorAll('.form-control')].map(el => el.value);
 
+    let isValid = validateInputFieldsAreNotEmpty(title, description, imageUrl);
+    if (isValid === false) return;
+
     movieService.add({
             title,
             description,
             imageUrl,
-            _creator: authService.getAuthData().email
+            _creator: authService.getAuthData().email,
+            _likesCount: 0,
+            peopleLiked: [""]
         })
         .then(key => navigate('/'));
 }
@@ -85,11 +90,16 @@ function onRegisterSubmit(e) {
     let password = formData.get('password');
     let repeatPassword = formData.get('repeatPassword');
 
-    let isValid = validateInput(email, password, repeatPassword);
+    let isValid = validateInputFieldsAreNotEmpty(email, password, repeatPassword);
     if (isValid === false) return;
 
     if (password !== repeatPassword) {
         alert("Passwords don't match!");
+        return;
+    }
+
+    if (password.length < 6) {
+        alert("The password should be at least 6 characters long!");
         return;
     }
 
@@ -111,6 +121,22 @@ function deleteMovie(e) {
 function deleteMovie(key) {
     movieService.deleteMovie(key)
         .then(res => navigate('/'));
+}
+
+function onEditMovieSubmit(e, key) {
+    e.preventDefault();
+
+    let [title, description, imageUrl] = [...document.getElementById('edit-movie-form').querySelectorAll('.form-control')].map(el => el.value);
+
+    let isValid = validateInputFieldsAreNotEmpty(title, description, imageUrl);
+    if (isValid === false) return;
+
+    movieService.editMovie(key, {
+            title,
+            description,
+            imageUrl,
+        })
+        .then(data => navigate(`/details/${key}`));
 }
 
 addEventListeners();

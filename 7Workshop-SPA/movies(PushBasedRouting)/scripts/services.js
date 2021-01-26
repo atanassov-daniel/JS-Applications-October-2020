@@ -129,10 +129,17 @@ const movieService = {
         }));
     },
 
-    async getOne(key) {
+    async getOne(key, currentUserEmail) { // getting only one movie will be dony only when loading the details page, so all the needed logic can go directly in here
         let data = await request(`${databaseUrl}/movies/${key}.json`, 'GET');
 
-        return data;
+        let likes = Object.values(data.likes || {});
+        let hasAlreadyLiked = likes.includes(currentUserEmail);
+
+        return Object.assign(data, {
+            isCreator: data._creator === currentUserEmail,
+            hasAlreadyLiked,
+            likesCount: likes ? likes.length : 0
+        });
     },
 
     async deleteMovie(key) {
@@ -147,13 +154,20 @@ const movieService = {
         return data;
     },
 
-    isCreator(movieCreator) {
+    /* isCreator(movieCreatorEmail, currentUserEmail) {
         // let movieCreator = await request(`${databaseUrl}/movies/${key}.json`, 'GET')._creator;
-        let currentUserEmail = authService.getAuthData().email;
-
-        if (movieCreator === currentUserEmail) {
+        // let currentUserEmail = authService.getAuthData().email;
+        if (movieCreatorEmail === currentUserEmail) {
             return true;
         }
         return false;
-    }
+    }, */
+
+    async likeMovie(key, currentUserEmail) {
+        let data = await request(`${databaseUrl}/movies/${key}/likes/.json`, 'POST', currentUserEmail);
+
+        return data;
+    },
+
+    // hasAlreadyLiked(key, currentUserEmail)
 };

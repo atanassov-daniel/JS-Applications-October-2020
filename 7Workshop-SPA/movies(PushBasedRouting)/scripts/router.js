@@ -14,7 +14,8 @@ const routes = {
     '/addMovie': 'add-movie-template',
     // '/addMovie/': 'add-movie-template',
     '/details': 'movie-details-template',
-    '/edit': 'edit-movie-template'
+    '/edit': 'edit-movie-template',
+    '/search': 'search-results-template'
 };
 
 const router = async (path) => { // loads the content corresponding to the current page
@@ -35,18 +36,20 @@ const router = async (path) => { // loads the content corresponding to the curre
         let key = path.replace('/details/', '');
         path = '/details';
 
-        let movieDetails = await movieService.getOne(key);
+        let currentUserEmail = authService.getAuthData().email;
 
-        let isCreator = movieService.isCreator(movieDetails._creator);
+        let movieDetails = await movieService.getOne(key, currentUserEmail);
+        // let isCreator = movieService.isCreator(movieDetails._creator, currentUserEmail);
+
         /* templateData = {
             ...templateData,
             ...movieDetails
         }; */
         Object.assign(templateData, movieDetails, {
-            key // this assignt the key and its value too
-        }, {
-            isCreator
-        });
+                key // this assigns the key and its value too
+            }, // { isCreator }
+
+        );
         console.log(templateData);
     } else if (path.startsWith('/edit/')) {
         let key = path.replace('/edit/', '');
@@ -57,6 +60,15 @@ const router = async (path) => { // loads the content corresponding to the curre
         Object.assign(templateData, movieDetails, {
             key
         });
+    } else if (path.startsWith('/search')) {
+        let searchText = path.replace('/search?', '');
+        path = '/search';
+
+        let movies = await movieService.getAll();
+        movies = movies.filter(obj => obj.title.toLowerCase().includes(searchText.toLowerCase()));
+
+        templateData.movies = movies;
+        templateData.searchQuery = searchText;
     }
 
     let templateId = routes[path];

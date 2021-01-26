@@ -11,6 +11,7 @@ function addEventListeners() {
     Handlebars.registerPartial('movie-card-template', movieCardTemplate);
 
     // navigate('/'); // the first time that the app loads send the user to the home page
+    console.log(location.pathname);
     navigate(location.pathname);
     // document.querySelector('.navigation').addEventListener('click', navigateHandler);
 }
@@ -75,8 +76,9 @@ function onAddMovieSubmit(e) {
             description,
             imageUrl,
             _creator: authService.getAuthData().email,
-            _likesCount: 0,
-            peopleLiked: [""]
+            // _likesCount: 0,
+            // peopleLiked: [""]
+            // likes: [""]
         })
         .then(key => navigate('/'));
 }
@@ -137,6 +139,25 @@ function onEditMovieSubmit(e, key) {
             imageUrl,
         })
         .then(data => navigate(`/details/${key}`));
+}
+
+function onMovieLike(e, movieKey) {
+    e.preventDefault();
+
+    let {
+        email
+    } = authService.getAuthData();
+
+    movieService.likeMovie(movieKey, email)
+        .then(data => navigate(`/details/${movieKey}`));
+}
+
+function onMovieSearchSubmit(e) {
+    e.preventDefault();
+
+    let searchText = document.getElementById('search-text').value;
+
+    navigate(`/search?${searchText}`);
 }
 
 addEventListeners();

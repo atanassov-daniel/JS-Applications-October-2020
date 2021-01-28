@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "./1UNIT-TESTING&MODULES/Lab/test.js",
-  "dependencies": {},
   "devDependencies": {
     "chai": "^4.2.0",
+    "lite-server": "^2.6.1",
     "mocha": "^8.2.0"
   },
   "scripts": {

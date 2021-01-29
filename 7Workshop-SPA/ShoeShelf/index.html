@@ -26,8 +26,11 @@
         firebase.initializeApp(firebaseConfig);
     </script>
 
-    <!-- <script src="/scripts/init.js" type="module" defer></script> -->
     <script src="/scripts/init.js" type="module" defer></script>
+
+    <!--     <script src="/scripts/services.js" defer></script>
+    <script src="/scripts/router.js" defer></script> 
+    <script src="/scripts/init.js" defer></script> -->
 </head>
 
 <body>
@@ -38,30 +41,6 @@
     </footer>
 
     <!-- <main>
-        <div class="offer-details">
-            <h1>Under Armour HOVR</h1>
-            <div class="info">
-                <img src="https://i1.t4s.cz/products/3023295-602/under-armour-ua-w-hovr-phantom-se-trek-263676-3023295-603.jpg"
-                    alt="">
-                <div class="description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis explicabo
-                    voluptatibus odio? Deleniti amet qui tenetur ipsa enim blanditiis laboriosam distinctio, dignissimos
-                    cupiditate, delectus autem. Explicabo exercitationem voluptatibus reprehenderit repellat. Lorem
-                    ipsum dolor, sit amet consectetur adipisicing elit. Tempore reiciendis maiores aliquid nobis,
-                    accusantium dolore iste ipsa atque deserunt corrupti maxime, alias neque libero temporibus expedita
-                    magni perferendis aut nostrum.
-                    <br>
-                    <br>
-                    <p class="price">$149.99</p>
-                </div>
-            </div>
-            <div class="actions">
-                <a class="nav-link">Edit</a>
-                <a class="nav-link">Delete</a>
-                <a class="nav-link">Buy</a>
-                <span>You bought it</span>
-            </div>
-        </div>
-
         <h1>Edit Offer</h1>
         <p class="message"></p>
         <form>
@@ -172,7 +151,14 @@
             </div>
 
             {{#if isAuthenticated}}
-            <div class="shoes">
+                {{#each shoes}}
+                    {{> shoe-card-template}}
+                {{else}}
+                    <p>There are no shoes</p>
+                {{/each}}
+            {{/if}}
+
+            <!-- <div class="shoes">
                 <div class="shoe">
                     <img src="https://i1.t4s.cz/products/ar4149-001/nike-air-zoom-pegasus-36-gs-251390-ar4149-001.jpeg">
                     <h3>Nike Pegasus</h3>
@@ -202,8 +188,7 @@
                     <h3>Asics Gel-Quantum</h3>
                     <a>Buy it for $140,00</a>
                 </div>
-            </div>
-            {{/if}}
+            </div> -->
 
         </main>
     </script>
@@ -214,7 +199,7 @@
         <main>
             <h1>Create New Offer</h1>
             <p class="message"></p>
-            <form>
+            <form onsubmit="onCreateOfferSubmit(event)">
                 <div>
                     <input type="text" placeholder="Name...">
                 </div>
@@ -237,9 +222,42 @@
         </main>
     </script>
 
-    <script type="text/x-handlebars-template" id="-template"></script>
+    <script type="text/x-handlebars-template" id="shoe-card-template">
+        <div class="shoe" onclick="navigateHandler(event)" id="{{key}}">
+            <img src="{{imageUrl}}">
+            <!-- onclick="showDetails(event)" -->
+            <h3>{{name}}</h3>
+            <a>Buy it for ${{price}}</a>
+        </div>
+    </script>
 
-    <script type="text/x-handlebars-template" id="-template"></script>
+    <script type="text/x-handlebars-template" id="shoe-details-template">
+        {{>navigation-template}}
+
+        <main>
+            <div class="offer-details">
+                <h1>Under Armour HOVR</h1>
+                <div class="info">
+                    <img src="{{imageUrl}}"
+                        alt="">
+                    <div class="description">{{description}}
+                        <br>
+                        <br>
+                        <p class="price">$149.99</p>
+                    </div>
+                </div>
+                <div class="actions">
+                    {{#if isCreator}}
+                        <a class="nav-link">Edit</a>
+                        <a class="nav-link">Delete</a>
+                    {{else}}
+                        <a class="nav-link">Buy</a>
+                    {{/if}}
+                    <span>You bought it</span>
+                </div>
+            </div>
+        </main>
+    </script>
 
     <script type="text/x-handlebars-template" id="-template"></script>
 

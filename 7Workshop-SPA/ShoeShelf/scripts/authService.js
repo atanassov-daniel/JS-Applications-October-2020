@@ -1,4 +1,4 @@
-const authService = {
+export const authService = {
     getAuthData() {
         let currentUser = firebase.auth().currentUser;
 
@@ -7,8 +7,4 @@ const authService = {
             email: currentUser ? currentUser.email : null
         };
     },
-};
-
-export {
-    authService
 };

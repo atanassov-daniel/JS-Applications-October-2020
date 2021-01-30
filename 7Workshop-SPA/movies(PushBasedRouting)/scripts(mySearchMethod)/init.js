@@ -4,38 +4,16 @@
 
 function addEventListeners() {
     let navigationTemplate = document.getElementById('navigation-template').innerHTML;
-    let notificationsTemplate = document.getElementById('notifications-template').innerHTML;
     // let navigationTemplate = Handlebars.compile(document.getElementById('navigation-template').innerHTML); => na Иво му е така и все пак работи
     let movieCardTemplate = document.getElementById('movie-card-template').innerHTML;
 
     Handlebars.registerPartial('navigation-template', navigationTemplate);
-    Handlebars.registerPartial('notifications-template', notificationsTemplate);
     Handlebars.registerPartial('movie-card-template', movieCardTemplate);
 
     // navigate('/'); // the first time that the app loads send the user to the home page
     console.log(location.pathname);
-    navigate(location.search.trim() === '' ? location.pathname : `${location.pathname}${location.search}`); // otherwise the queryString would get load on the initial load
+    navigate(location.pathname);
     // document.querySelector('.navigation').addEventListener('click', navigateHandler);
-}
-
-function showNotification(message, type) {
-    let sectionElement;
-
-    switch (type) {
-        case 'error':
-            sectionElement = document.getElementById('errorBoxSection');
-            break;
-        default: // 'success'
-            sectionElement = document.getElementById('successBoxSection');
-            break;
-    }
-
-    sectionElement.firstElementChild.innerText = message;
-    sectionElement.style.display = 'block';
-
-    setTimeout(() => {
-        sectionElement.style.display = 'none';
-    }, 10000);
 }
 
 function navigateHandler(e) {
@@ -81,12 +59,7 @@ function onLoginSubmit(e) {
 
     authService.login(email, password)
         .then(data => {
-            if (data.error) {
-                showNotification(`Couldn\'t login - ${data.error.message}`, 'error');
-            } else { // if there was no error, redirect to the Home Page
-                showNotification('Successfully logged in');
-                navigate('/'); // navigate to the home page
-            }
+            navigate('/'); // navigate to the home page
         });
 }
 
@@ -134,12 +107,7 @@ function onRegisterSubmit(e) {
 
     authService.register(email, password)
         .then(data => {
-            if (data.error) {
-                showNotification(`Couldn\'t be registered - ${data.error.message}`, 'error');
-            } else { // if there was no error, redirect to the Home Page
-                showNotification('You have been registered successfully!');
-                navigate('/'); // navigate to the home page
-            }
+            navigate('/'); // navigate to the home page
         });
 }
 
@@ -181,24 +149,19 @@ function onMovieLike(e, movieKey) {
     } = authService.getAuthData();
 
     movieService.likeMovie(movieKey, email)
-        .then(data => {
-            showNotification('You liked this movie successfully, my friend!');
-            navigate(`/details/${movieKey}`);
-        });
+        .then(data => navigate(`/details/${movieKey}`));
 }
 
+/* 
+TODO
 function onMovieSearchSubmit(e) {
     e.preventDefault();
 
     let searchText = document.getElementById('search-text').value;
 
-    navigate(`/home?search=${searchText}`);
-}
+    navigate(`/search?${searchText}`);
+} 
+TODO
+*/
 
 addEventListeners();
-
-window.addEventListener('popstate', (e) => {
-    console.log(e);
-    console.log('popstate path = ' + location.pathname);
-    navigate(location.search.trim() === '' ? location.pathname : `${location.pathname}${location.search}`); // otherwise the queryString would get load on the initial load
-});

@@ -20,7 +20,8 @@ export const shoeService = {
 
         return {
             ...data,
-            key
+            key,
+            price: data.price.toFixed(2)
         };
     },
 

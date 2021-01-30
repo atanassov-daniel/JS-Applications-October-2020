@@ -19,13 +19,6 @@
     <div class="container" id="container">
         <div id="app"></div>
 
-        <section class="notifications" style="display: none;">
-            <p class="notification-message" id="errorBox">Message...</p>
-        </section>
-        <section class="notifications" style="display: none;background-color:rgba(1, 131, 29, 0.541);">
-            <p class="notification-message" id="successBox">Message...</p>
-        </section>
-
         <footer class="page-footer font-small">
             <div class="footer-copyright text-center py-3">© 2020
                 <a href="https://softuni.bg/trainings/2840/js-applications-june-2020/internal" class="text-dark">JS
@@ -33,6 +26,18 @@
             </div>
         </footer>
     </div>
+
+
+
+
+    <script type="text/x-handlebars-template" id="notifications-template">
+        <section class="notifications" id="errorBoxSection" style="display: none;">
+            <p class="notification-message" id="errorBox"></p>
+        </section>
+        <section class="notifications" id="successBoxSection" style="display: none;background-color:rgba(1, 131, 29, 0.541);">
+            <p class="notification-message" id="successBox"></p>
+        </section>
+    </script>
 
     <script type="text/x-handlebars-template" id="navigation-template">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark" onclick="navigateHandler(event)">
@@ -59,6 +64,7 @@
 
     <script type="text/x-handlebars-template" id="login-form-template">
         {{>navigation-template}}
+        {{>notifications-template}}
         
         <form id="login-form" class="text-center border border-light p-5" onsubmit="onLoginSubmit(event)">
             <div class="form-group">
@@ -76,6 +82,7 @@
 
     <script type="text/x-handlebars-template" id="register-form-template">
         {{>navigation-template}}
+        {{>notifications-template}}
         
         <form id="register-form" class="text-center border border-light p-5" onsubmit="onRegisterSubmit(event)">
             <div class="form-group">
@@ -99,7 +106,8 @@
 
     <script type="text/x-handlebars-template" id="search-results-template">
         {{>navigation-template}}
-
+        {{>notifications-template}}
+        
         <h1 class="display-4">Search results for: <b>{{searchQuery}}</b></h1>
         <!-- <h1 class="text-center">Search results for: {{searchQuery}}</h1> -->
 
@@ -121,7 +129,8 @@
 
     <script type="text/x-handlebars-template" id="home-template">
         {{>navigation-template}}
-
+        {{>notifications-template}}
+        
         <div class="jumbotron jumbotron-fluid text-light" style="background-color: #343a40;">
             <img src="https://s.studiobinder.com/wp-content/uploads/2019/06/Best-M-Night-Shyamalan-Movies-and-Directing-Style-StudioBinder.jpg"
                 class="img-fluid" alt="Responsive image">
@@ -158,7 +167,8 @@
 
     <script type="text/x-handlebars-template" id="add-movie-template">
         {{>navigation-template}}
-
+        {{>notifications-template}}
+        
         <form id="add-movie-form" class="text-center border border-light p-5" onsubmit="onAddMovieSubmit(event)">
             <h1>Add Movie</h1>
             <div class="form-group">
@@ -215,7 +225,8 @@
 
     <script type="text/x-handlebars-template" id="movie-details-template">
         {{>navigation-template}}
-
+        {{>notifications-template}}
+        
         <div class="container">
             <div class="row bg-light text-dark">
                 <h1>Movie title: {{title}}</h1>
@@ -245,7 +256,8 @@
 
     <script type="text/x-handlebars-template" id="edit-movie-template">
         {{>navigation-template}}
-
+        {{>notifications-template}}
+        
         <form id="edit-movie-form" class="text-center border border-light p-5" onsubmit="onEditMovieSubmit(event, '{{key}}')">
             <h1>Edit Movie</h1>
             <div class="form-group">

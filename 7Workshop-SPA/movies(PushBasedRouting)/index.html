@@ -209,6 +209,19 @@
         <link rel="stylesheet" href="/static/css/404.css">
     </script>
 
+    <script type="text/x-handlebars-template" id="forbidden-template">
+        {{>navigation-template}}
+
+        <div class="mainbox" id="404-not-found">
+            <div class="err">4</div>
+            <div class="err2">0</div>
+            <div class="err3">3</div>
+            <div class="msg">It appears you don't have permission to access this page! <br><br> <p>Let's go <a href="/">home</a> and try from there. <br> Alternatively, if you're a guest, please <a href="/login">login</a> or <a href="/register">register</a> and then try again!</p></div>
+        </div>
+
+        <link rel="stylesheet" href="/static/css/404.css">
+    </script>
+
     <script type="text/x-handlebars-template" id="movie-card-template">
         <div class="card mb-4">
             <img class="card-img-top" src="{{imageUrl}}"

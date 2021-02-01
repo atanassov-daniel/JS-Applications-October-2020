@@ -83,14 +83,15 @@ const router = async (url) => { // loads the content corresponding to the curren
     }
 
     if (path === '/logout') { // log the user out and navigate to the home page
-        authService.logout();
+        authService.logout('Successful logout!');
+        showNotification();
 
         return navigate('/login'); // the fucntion will get called and return(stop the execution) so that the function doesn't later return to doing the bottom logic which won't be needed and will lead to an error
     } else if (path === '/' || path === '/home' || path === '/home/') {
         let searchText = queryString?.split('=')[1];
 
         let movies = await movieService.getAll();
-        movies = movies.filter(obj => !searchText || obj.title.toLowerCase().includes(searchText.toLowerCase())); //  ако searchText-a го няма, върни true => няма да гледа второто условие; ако го има, върни false => ще разчита на второто условие
+        movies = movies?.filter(obj => !searchText || obj.title.toLowerCase().includes(searchText.toLowerCase())); //  ако searchText-a го няма, върни true => няма да гледа второто условие; ако го има, върни false => ще разчита на второто условие
 
         templateData.movies = movies;
     } else if (path.startsWith('/details/')) {

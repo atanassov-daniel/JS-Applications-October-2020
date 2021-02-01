@@ -119,12 +119,14 @@ const movieService = {
     async getAll() {
         let data = await request(`${databaseUrl}/movies/.json`, 'GET');
 
+        console.log(data);
+
         /* return Object.entries(data).map(entry => ({
             key: entry[0],
             ...entry[1]
         })); */
         // return Object.keys(data).map(key => ({ key, ...data[key] }));
-        return Object.keys(data).map(key => Object.assign(data[key], {
+        return data === null ? null : Object.keys(data).map(key => Object.assign(data[key], {
             key
         }));
     },

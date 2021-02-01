@@ -32,10 +32,11 @@ function showNotification(message, type) {
 
     sectionElement.firstElementChild.innerText = message;
     sectionElement.style.display = 'block';
+    sectionElement.scrollIntoView();
 
     setTimeout(() => {
         sectionElement.style.display = 'none';
-    }, 10000);
+    }, 3000);
 }
 
 function navigateHandler(e) {
@@ -61,7 +62,7 @@ function navigateHandler(e) {
 const validateInputFieldsAreNotEmpty = (...values) => {
     for (const value of values) {
         if (value.trim() === '') {
-            alert("Please fill in all the required fields!");
+            // alert("Please fill in all the required fields!");
             return false;
         }
     }
@@ -77,14 +78,22 @@ function onLoginSubmit(e) {
     let password = formData.get('password');
 
     let isValid = validateInputFieldsAreNotEmpty(email, password);
-    if (isValid === false) return;
+    if (isValid === false) {
+        showNotification('Please fill in all the required fields!', 'error');
+        return;
+    }
+
+    if (email.match(/\S+@\S+\.\S+/) === null) {
+        showNotification('The email address is invalid!', 'error');
+        return;
+    }
 
     authService.login(email, password)
         .then(data => {
             if (data.error) {
                 showNotification(`Couldn\'t login - ${data.error.message}`, 'error');
             } else { // if there was no error, redirect to the Home Page
-                showNotification('Successfully logged in');
+                showNotification('Login successful!');
                 navigate('/'); // navigate to the home page
             }
         });
@@ -96,7 +105,10 @@ function onAddMovieSubmit(e) {
     let [title, description, imageUrl] = [...document.getElementById('add-movie-form').querySelectorAll('.form-control')].map(el => el.value);
 
     let isValid = validateInputFieldsAreNotEmpty(title, description, imageUrl);
-    if (isValid === false) return;
+    if (isValid === false) {
+        showNotification('Please fill in all the required fields!', 'error');
+        return;
+    }
 
     movieService.add({
             title,
@@ -107,7 +119,10 @@ function onAddMovieSubmit(e) {
             // peopleLiked: [""]
             // likes: [""]
         })
-        .then(key => navigate('/'));
+        .then(key => {
+            showNotification('Created successfully!');
+            navigate('/');
+        });
 }
 
 function onRegisterSubmit(e) {
@@ -120,15 +135,23 @@ function onRegisterSubmit(e) {
     let repeatPassword = formData.get('repeatPassword');
 
     let isValid = validateInputFieldsAreNotEmpty(email, password, repeatPassword);
-    if (isValid === false) return;
+    if (isValid === false) {
+        showNotification('Please fill in all the required fields!', 'error');
+        return;
+    }
+
+    if (email.match(/\S+@\S+\.\S+/) === null) {
+        showNotification('The email address is invalid!', 'error');
+        return;
+    }
 
     if (password !== repeatPassword) {
-        alert("Passwords don't match!");
+        showNotification('Passwords don\'t match!', 'error');
         return;
     }
 
     if (password.length < 6) {
-        alert("The password should be at least 6 characters long!");
+        showNotification('The password should be at least 6 characters long!', 'error');
         return;
     }
 
@@ -137,7 +160,7 @@ function onRegisterSubmit(e) {
             if (data.error) {
                 showNotification(`Couldn\'t be registered - ${data.error.message}`, 'error');
             } else { // if there was no error, redirect to the Home Page
-                showNotification('You have been registered successfully!');
+                showNotification('Successful registration!');
                 navigate('/'); // navigate to the home page
             }
         });
@@ -154,7 +177,11 @@ function deleteMovie(e) {
 } */
 function deleteMovie(key) {
     movieService.deleteMovie(key)
-        .then(res => navigate('/'));
+        .then(res => {
+            showNotification('Deleted successfully!');
+
+            navigate('/');
+        });
 }
 
 function onEditMovieSubmit(e, key) {
@@ -170,7 +197,11 @@ function onEditMovieSubmit(e, key) {
             description,
             imageUrl,
         })
-        .then(data => navigate(`/details/${key}`));
+        .then(data => {
+            showNotification('Eddited successfully!');
+
+            navigate(`/details/${key}`);
+        });
 }
 
 function onMovieLike(e, movieKey) {

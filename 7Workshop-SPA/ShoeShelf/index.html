@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/styles.css">
+    <!-- <link rel="stylesheet" href="/public/notifications.css"> -->
     <link rel="icon" type="image/png" href="/public/favicon.png">
     <title>Shoe Shelf</title>
 
@@ -40,70 +41,6 @@
         <p><a href="https://softuni.bg">Software University</a> - JS Applications @ 2020</p>
     </footer>
 
-    <!-- <main>
-        <h1>Edit Offer</h1>
-        <p class="message"></p>
-        <form>
-            <div>
-                <input type="text" placeholder="Name...">
-            </div>
-            <div>
-                <input type="text" placeholder="Price...">
-            </div>
-            <div>
-                <input type="text" placeholder="Image url...">
-            </div>
-            <div>
-                <textarea placeholder="Give us some description about this offer..."></textarea>
-            </div>
-            <div>
-                <input type="text" placeholder="Brand...">
-            </div>
-            <div>
-                <button>Edit</button>
-            </div>
-        </form>
-
-        <h1>Login</h1>
-        <p class="form-info">Don't have account?
-            <a href="../user/register.html" class="nav-link">Register now</a> and fix that!
-        </p>
-        <form action="">
-            <div>
-                <input type="email" placeholder="Email...">
-            </div>
-
-            <div>
-                <input type="password" placeholder="Password...">
-            </div>
-            <div>
-                <button>Login</button>
-            </div>
-        </form>
-
-        <h1>Register</h1>
-        <p class="form-info">Already registered?
-            <a href="/login" class="nav-link">Login now</a> and have some fun!
-        </p>
-
-        <form action="">
-            <div>
-                <input type="email" placeholder="Email...">
-            </div>
-            <div>
-                <input type="password" placeholder="Password">
-            </div>
-            <div>
-                <input type="password" placeholder="Re-password">
-            </div>
-            <div>
-                <p class="message"></p>
-                <button>Register</button>
-            </div>
-        </form>
-
-    </main>
- -->
 
     <script type="text/x-handlebars-template" id="navigation-template">
         <header>
@@ -124,13 +61,22 @@
     
                     {{#if isAuthenticated}}
                         <li>Welcome, {{email}} |
-                            <a href="/logout" class="nav-link">Logout</a> <!-- onclick="logout()" -->
+                            <a href="/logout" class="nav-link" onclick="navigateHandler(event)">Logout</a> <!-- onclick="logout()" -->
                         </li>
                     {{/if}}
                 </ul>
             </nav>
         </header>
     </script>
+
+    <!-- <script type="text/x-handlebars-template" id="notifications-template">
+        <section class="notifications" id="errorBoxSection" style="display: none;">
+            <p class="notification-message" id="errorBox"></p>
+        </section>
+        <section class="notifications" id="successBoxSection" style="display: none;background-color:rgba(1, 131, 29, 0.541);">
+            <p class="notification-message" id="successBox"></p>
+        </section>
+    </script> -->
 
     <script type="text/x-handlebars-template" id="home-template">
         {{>navigation-template}}
@@ -144,7 +90,7 @@
                     </div>
                     {{#unless isAuthenticated}}
                     <p>
-                        <a href="/register" class="nav-link">Register Now</a> and Try it!
+                        <a href="/register" class="nav-link" onclick="navigateHandler(event)">Register Now</a> and Try it!
                     </p>
                     {{/unless}}
                 </div>
@@ -154,7 +100,7 @@
                 {{#each shoes}}
                     {{> shoe-card-template}}
                 {{else}}
-                    <p>There are no shoes</p>
+                    <h4>No shoes to display. Be the first to create a new offer...</h4>
                 {{/each}}
             {{/if}}
 
@@ -262,8 +208,85 @@
         </main>
     </script>
 
-    <script type="text/x-handlebars-template" id="-template"></script>
+    <script type="text/x-handlebars-template" id="register-template">
+        {{>navigation-template}}
 
+        <main>
+            <h1>Register</h1>
+            <p class="form-info">Already registered?
+                <a href="/login" class="nav-link" onclick="navigateHandler(event)">Login now</a> and have some fun!
+            </p>
+
+            <form onsubmit="onRegisterSubmit(event)">
+                <div>
+                    <input type="email" placeholder="Email...">
+                </div>
+                <div>
+                    <input type="password" placeholder="Password">
+                </div>
+                <div>
+                    <input type="password" placeholder="Repeat password">
+                </div>
+                <div>
+                    <p class="message"></p>
+                    <button>Register</button>
+                </div>
+            </form>
+        </main>
+    </script>
+
+    <script type="text/x-handlebars-template" id="login-template">
+        {{>navigation-template}}
+
+        <main>
+            <h1>Login</h1>
+            <p class="form-info">Don't have account?
+                <a href="/register" class="nav-link" onclick="navigateHandler(event)">Register now</a> and fix that!
+            </p>
+
+            <form onsubmit="onLoginSubmit(event)">
+                <div>
+                    <input type="email" placeholder="Email...">
+                </div>
+
+                <div>
+                    <input type="password" placeholder="Password...">
+                </div>
+                <div>
+                    <button>Login</button>
+                </div>
+            </form>
+        </main>
+    </script>
+
+    <script type="text/x-handlebars-template" id="edit-shoe-template">
+        {{>navigation-template}}
+
+        <main>
+            <h1>Edit Offer</h1>
+            <p class="message"></p>
+            <form>
+                <div>
+                    <input type="text" placeholder="Name...">
+                </div>
+                <div>
+                    <input type="text" placeholder="Price...">
+                </div>
+                <div>
+                    <input type="text" placeholder="Image url...">
+                </div>
+                <div>
+                    <textarea placeholder="Give us some description about this offer..."></textarea>
+                </div>
+                <div>
+                    <input type="text" placeholder="Brand...">
+                </div>
+                <div>
+                    <button>Edit</button>
+                </div>
+            </form>
+        </main>
+    </script>
     <script type="text/x-handlebars-template" id="-template"></script>
 </body>
 

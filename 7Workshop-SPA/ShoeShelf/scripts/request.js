@@ -9,5 +9,7 @@ export const request = async (url, method, body) => {
 
     let data = await response.json();
 
+    // if(data.error) return Promise.reject()
+
     return data;
 };

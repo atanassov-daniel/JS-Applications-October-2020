@@ -1,3 +1,5 @@
+//! navigateHandler prevents the default reload by the 'a' tag
+
 import {
     navigate
 } from "./router.js";
@@ -10,9 +12,11 @@ import {
 
 function addEventListeners() {
     let navigationTemplateHTML = document.getElementById('navigation-template').innerHTML;
+    // let notificationsTemplateHTML = document.getElementById('notifications-template').innerHTML;
     let shoeCardTemplateHTML = document.getElementById('shoe-card-template').innerHTML;
 
     Handlebars.registerPartial('navigation-template', navigationTemplateHTML);
+    // Handlebars.registerPartial('notifications-template', notificationsTemplateHTML);
     Handlebars.registerPartial('shoe-card-template', shoeCardTemplateHTML);
 
     console.log(`on initial load location.pathname = ${location.pathname}`);
@@ -51,6 +55,24 @@ const validateInputFields = (...inputValues) => {
     return true;
 };
 
+/* window.showNotification = (message, type) => {
+    let sectionElement;
+
+    if (type === 'error') {
+        sectionElement = document.getElementById('errorBoxSection');
+    } else { // 'success'
+        sectionElement = document.getElementById('successBoxSection');
+    }
+
+    sectionElement.firstElementChild.innerText = message;
+    sectionElement.style.display = 'block';
+    sectionElement.scrollIntoView();
+
+    setTimeout(() => {
+        sectionElement.style.display = 'none';
+    }, 3000);
+}; */
+
 window.onCreateOfferSubmit = function (e) {
     e.preventDefault();
 
@@ -62,7 +84,7 @@ window.onCreateOfferSubmit = function (e) {
 
     price = price.replace(',', '.');
     if (isNaN(Number(price))) { // if the price is invalid, 
-        alert('The price must be a number');
+        alert('The price must be a number!');
         return;
     }
 
@@ -75,15 +97,80 @@ window.onCreateOfferSubmit = function (e) {
             _creator: authService.getAuthData().email
             // _buyers
         })
-        .then(key => navigate('/'));
+        .then(key => {
+            // showNotification('Created successfully!');
+            navigate('/');
+        });
     // console.log(price);
     // Number(document.querySelectorAll('input')[1].value.replace(',', '.')).toFixed(2);
 };
 
-window.showDetails = function (e) {
+window.onRegisterSubmit = (e) => {
+    e.preventDefault();
+
+    const [email, password, repeatPassword] = [...document.querySelectorAll('input')].map(el => el.value);
+
+    let isValid = validateInputFields(email, password, repeatPassword);
+    if (isValid === false) return;
+
+    if (email.match(/\S+@\S+\.\S+/) === null) {
+        alert('The email address is invalid!');
+        return;
+    }
+
+    if (password !== repeatPassword) {
+        alert('Passwords don\'t match!');
+        return;
+    }
+
+    if (password.length < 6) {
+        alert('The password should be at least 6 characters long!');
+        return;
+    }
+    /* authService.signUp(email, password)
+        .then(userEmail => console.log(userEmail))
+        .catch(err => console.log(err)); */
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            navigate('/');
+        })
+        .catch((error) => {
+            alert(`Couldn't be registered - ${error.message}`);
+        });
+};
+
+window.onLoginSubmit = (e) => {
+    e.preventDefault();
+
+    const [email, password] = [...document.querySelectorAll('input')].map(el => el.value);
+
+    let isValid = validateInputFields(email, password);
+    if (isValid === false) return;
+
+    if (email.match(/\S+@\S+\.\S+/) === null) {
+        alert('The email address is invalid!');
+        return;
+    }
+
+    if (password.length < 6) {
+        alert('The password should be at least 6 characters long!');
+        return;
+    }
+
+    firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            navigate('/');
+        })
+        .catch((error) => {
+            alert(`Couldn't log in - ${error.message}`);
+        });
+};
+
+
+/* window.showDetails = function (e) {
     // console.log(e.target);
     console.log(e.currentTarget);
-};
+}; */
 
 /* firebase.auth().createUserWithEmailAndPassword('test@test.bg', '123456')
     .then((userCredential) => {

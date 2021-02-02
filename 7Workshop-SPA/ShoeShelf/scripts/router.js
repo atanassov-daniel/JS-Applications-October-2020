@@ -12,6 +12,11 @@ const routes = {
     '/create-offer': 'create-offer-template',
     '/create-offer/': 'create-offer-template',
     '/details': 'shoe-details-template',
+    '/register': 'register-template',
+    '/register/': 'register-template',
+    '/login': 'login-template',
+    '/login/': 'login-template',
+
     // '/': '-template',
     // '/': '-template',
     // '/': '-template',
@@ -26,10 +31,9 @@ const router = async (path) => {
     // console.log(`router -> ${JSON.stringify(templateData)}`);
 
     if (['/', '/home', '/home/'].includes(path)) {
-        templateData = {
-            ...templateData,
+        if (templateData.isAuthenticated === true) Object.assign(templateData, {
             shoes: await shoeService.getAll()
-        };
+        });
 
         console.log(templateData);
     } else if (path.startsWith('/details')) {
@@ -44,6 +48,13 @@ const router = async (path) => {
             isCreator: movieData._creator === authService.getAuthData().email
         };
         console.log(templateData);
+    } else if (path.startsWith('/logout')) {
+        firebase.auth().signOut().then(() => {
+            // alert('Sign-out successful.');
+            return navigate('/login');
+        }).catch((error) => {
+            alert(`Couldn't sign out - ${error.message}`);
+        });
     }
 
     let templateId = routes[path];

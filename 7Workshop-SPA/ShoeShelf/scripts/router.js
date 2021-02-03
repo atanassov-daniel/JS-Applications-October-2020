@@ -16,6 +16,7 @@ const routes = {
     '/register/': 'register-template',
     '/login': 'login-template',
     '/login/': 'login-template',
+    '/edit': 'edit-shoe-template'
 
     // '/': '-template',
     // '/': '-template',
@@ -37,16 +38,39 @@ const router = async (path) => {
 
         console.log(templateData);
     } else if (path.startsWith('/details')) {
-        const id = path.replace('/details/', '');
-        path = '/details';
+        let id = path.replace('/details/', '');
+
+        if (path.includes('/edit')) {
+            id = id.replace('/edit/', '').replace('/edit', '');
+
+            path = '/edit';
+        }
+        /* else if (path.includes('/buy')) {
+                   id = id.replace('/buy/', '').replace('/buy', '');
+
+                   path = '/buy';
+               } */
+        else {
+            path = '/details';
+        }
 
         let movieData = await shoeService.getOne(id);
 
         templateData = {
             ...templateData,
             ...movieData,
-            isCreator: movieData._creator === authService.getAuthData().email
+            isCreator: movieData._creator === authService.getAuthData().email,
+            key: id
         };
+
+        let buyers = Object.values(templateData.buyers || {});
+
+        if (!buyers) templateData.buyersCount = 0;
+        else templateData.buyersCount = buyers.length;
+
+        templateData.hasBoughtIt = buyers.includes(templateData.email);
+        // buyers will be an assoc. rray with the emails, buyersCount is the length of the keys of that ass. array
+
         console.log(templateData);
     } else if (path.startsWith('/logout')) {
         firebase.auth().signOut().then(() => {

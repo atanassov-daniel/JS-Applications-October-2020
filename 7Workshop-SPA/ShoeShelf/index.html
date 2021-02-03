@@ -197,12 +197,17 @@
                 </div>
                 <div class="actions">
                     {{#if isCreator}}
-                        <a class="nav-link">Edit</a>
-                        <a class="nav-link">Delete</a>
+                        <a class="nav-link" href="/details/{{key}}/edit" onclick="navigateHandler(event)">Edit</a>
+                        <a class="nav-link" >Delete</a>
+                        <!-- !      href="/details/{{key}}/delete"       ask the user if he is sure he wants to delete that film -->
                     {{else}}
-                        <a class="nav-link">Buy</a>
+                        {{#unless hasBoughtIt}}
+                            <a class="nav-link" onclick="buyShoe(event, '{{key}}')">Buy</a>
+                        {{else}}
+                            <h2> <span>You bought it</span> </h2> 
+                        {{/unless}}
                     {{/if}}
-                    <span>You bought it</span>
+                    
                 </div>
             </div>
         </main>
@@ -265,21 +270,22 @@
         <main>
             <h1>Edit Offer</h1>
             <p class="message"></p>
-            <form>
+
+            <form onsubmit="onEditOfferSubmit(event, '{{key}}')">
                 <div>
-                    <input type="text" placeholder="Name...">
+                    <input type="text" placeholder="Name..." value="{{name}}">
                 </div>
                 <div>
-                    <input type="text" placeholder="Price...">
+                    <input type="text" placeholder="Price..." value="{{price}}">
                 </div>
                 <div>
-                    <input type="text" placeholder="Image url...">
+                    <input type="text" placeholder="Image url..."  value="{{imageUrl}}">
                 </div>
                 <div>
-                    <textarea placeholder="Give us some description about this offer..."></textarea>
+                    <textarea placeholder="Give us some description about this offer...">{{description}}</textarea>
                 </div>
                 <div>
-                    <input type="text" placeholder="Brand...">
+                    <input type="text" placeholder="Brand..." value="{{brand}}">
                 </div>
                 <div>
                     <button>Edit</button>
@@ -287,6 +293,7 @@
             </form>
         </main>
     </script>
+
     <script type="text/x-handlebars-template" id="-template"></script>
 </body>
 

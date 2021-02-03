@@ -105,6 +105,38 @@ window.onCreateOfferSubmit = function (e) {
     // Number(document.querySelectorAll('input')[1].value.replace(',', '.')).toFixed(2);
 };
 
+window.onEditOfferSubmit = function (e, key) {
+    e.preventDefault();
+
+    let [name, price, imageUrl, brand] = [...document.querySelectorAll('input')].map(el => el.value);
+    let description = document.querySelector('textarea').value;
+
+    let isValid = validateInputFields(name, price, imageUrl, description, brand);
+    if (isValid === false) return;
+
+    price = price.replace(',', '.');
+    if (isNaN(Number(price))) { // if the price is invalid, 
+        alert('The price must be a number!');
+        return;
+    }
+
+    shoeService.edit(key, {
+            name,
+            price: Number(price),
+            imageUrl,
+            description,
+            brand,
+            _creator: authService.getAuthData().email
+            // _buyers
+        })
+        .then(data => {
+            // showNotification('Edited successfully!');
+            navigate(`/details/${key}`);
+        });
+    // console.log(price);
+    // Number(document.querySelectorAll('input')[1].value.replace(',', '.')).toFixed(2);
+};
+
 window.onRegisterSubmit = (e) => {
     e.preventDefault();
 
@@ -164,6 +196,13 @@ window.onLoginSubmit = (e) => {
         .catch((error) => {
             alert(`Couldn't log in - ${error.message}`);
         });
+};
+
+window.buyShoe = (e, key) => {
+    e.preventDefault();
+
+    shoeService.buyShoe(key, authService.getAuthData().email)
+        .then(data => navigate(`/details/${key}`));
 };
 
 

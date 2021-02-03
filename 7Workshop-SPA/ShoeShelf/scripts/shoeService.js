@@ -36,8 +36,24 @@ export const shoeService = {
         return data.name; // this is the key of the newly created item
     },
 
-    async edit() {
+    async edit(key, shoeInfo) {
+        let data = await request(`${baseUrl}/shoes/${key}.json`, 'PATCH', shoeInfo);
 
+        return data.name; // this is the key of the edited item
+    },
+
+    async buyShoe(key, email) {
+        let buyers = await request(`${baseUrl}/shoes/${key}/buyers.json`, 'GET') || {};
+        buyers = Object.values(buyers) || [];
+
+        if (buyers.includes(email) === false) {
+            let data = await request(`${baseUrl}/shoes/${key}/buyers.json`, 'POST', email);
+
+            return data;
+        }
+        return {
+            hasBought: true
+        };
     }
 
 };

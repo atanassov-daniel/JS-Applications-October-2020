@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/styles.css">
+    <link rel="stylesheet" href="/public/404.css">
     <!-- <link rel="stylesheet" href="/public/notifications.css"> -->
     <link rel="icon" type="image/png" href="/public/favicon.png">
     <title>Shoe Shelf</title>
@@ -198,7 +199,7 @@
                 <div class="actions">
                     {{#if isCreator}}
                         <a class="nav-link" href="/details/{{key}}/edit" onclick="navigateHandler(event)">Edit</a>
-                        <a class="nav-link" >Delete</a>
+                        <a class="nav-link" href="/details/{{key}}/delete" onclick="navigateHandler(event)">Delete</a>
                         <!-- !      href="/details/{{key}}/delete"       ask the user if he is sure he wants to delete that film -->
                     {{else}}
                         {{#unless hasBoughtIt}}
@@ -294,7 +295,32 @@
         </main>
     </script>
 
-    <script type="text/x-handlebars-template" id="-template"></script>
+    <script type="text/x-handlebars-template" id="forbidden-template">
+        {{>navigation-template}}
+
+        <div class="mainbox" id="404-not-found">
+            <div class="err">4</div>
+            <div class="err2">0</div>
+            <div class="err3">3</div>
+            <div class="msg">It appears you don't have permission to access this page! <br><br> <p>Let's go <a href="/">home</a> and try from there. <br> Alternatively, if you're a guest, please <a href="/login">login</a> or <a href="/register">register</a> and then try again!</p></div>
+        </div>
+
+        <link rel="stylesheet" href="/static/css/404.css">
+    </script>
+
+    <script type="text/x-handlebars-template" id="page-not-found-template">
+        {{>navigation-template}}
+
+        <div class="mainbox" id="404-not-found">
+            <div class="err">4</div>
+            <div class="err2">0</div>
+            <div class="err3">4</div>
+            <div class="msg">Maybe this page moved? Got deleted? Is hiding out in quarantine? Never existed in the first place?<p>Let's go <a href="/">home</a> and try from there.</p></div>
+        </div>
+
+        <link rel="stylesheet" href="/static/css/404.css">
+    </script>
+
 </body>
 
 </html>

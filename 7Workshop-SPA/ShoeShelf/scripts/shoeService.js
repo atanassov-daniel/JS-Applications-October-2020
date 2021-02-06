@@ -8,11 +8,18 @@ export const shoeService = {
     async getAll() {
         let data = await request(`${baseUrl}/shoes/.json`, 'GET');
 
-        return Object.keys(data).map(key => ({
-            ...data[key],
-            key,
-            price: data[key].price.toFixed(2)
-        }));
+        return Object
+            .keys(data)
+            .map(key => ({
+                ...data[key],
+                key,
+                price: data[key].price.toFixed(2)
+            }))
+            .sort((obj1, obj2) => {
+                let bool = ((Object.values(obj2.buyers || {}).length || 0) - (Object.values(obj1.buyers || {}).length || 0));
+
+                return bool;
+            }); // sort the entries in descending order by the count of the buyers
     },
 
     async getOne(key) {
@@ -54,8 +61,13 @@ export const shoeService = {
         return {
             hasBought: true
         };
-    }
+    },
 
+    async delete(key) {
+        let data = await request(`${baseUrl}/shoes/${key}.json`, 'DELETE');
+
+        return data;
+    },
 };
 /* 
 await request(`https://shoeshelf-2b04b-default-rtdb.firebaseio.com/shoes/.json`, 'POST', JSON.stringify({

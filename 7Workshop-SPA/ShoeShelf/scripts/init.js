@@ -23,6 +23,11 @@ function addEventListeners() {
     navigate(location.pathname);
 }
 
+window.addEventListener('popstate', (e) => {
+    console.log('popstate');
+    navigate(location.pathname);
+});
+
 window.navigateHandler = function navigateHandler(e) {
     // console.log(e.target);
     // console.log(e.currentTarget.href);

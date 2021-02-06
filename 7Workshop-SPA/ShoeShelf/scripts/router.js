@@ -16,12 +16,47 @@ const routes = {
     '/register/': 'register-template',
     '/login': 'login-template',
     '/login/': 'login-template',
-    '/edit': 'edit-shoe-template'
+    '/edit': 'edit-shoe-template',
+    '/forbidden': 'forbidden-template',
+};
 
-    // '/': '-template',
-    // '/': '-template',
-    // '/': '-template',
-    // '/': '-template',
+// offerCreator, currentUserEmail
+// details, edit, delete
+const validateAuthPages = async (path, authData) => { // pass the key only if the page is '/edit/'
+    // the HomePage content is handled by the template itself, so this function doesn't need to take care of it
+    const nonAuthPages = ['/login', '/login/', '/register', '/register/'];
+    const authPages = ['/create-offer', '/create-offer/', '/logout'];
+
+    const isAuthPage = path.startsWith('/details/') || authPages.includes(path); //  || path.includes('/edit') || path.includes('/delete') 
+
+    if (isAuthPage) {
+        // if the page requires Auth, but the user isn't authorised, 'return false'
+        if (authData.isAuthenticated === false) {
+            return false;
+        } else {
+            // if the user tries to edit/delete an entry he isn't the creator of (as by writing '/edit' or '/delete' after the current pathname), 'return false'
+            if (path.includes('/edit') || path.includes('/delete')) {
+                let key = path.replace('/details/', '').replace('/edit/', '').replace('/edit', '').replace('/delete/', '').replace('/delete', '');
+
+                let shoeDetails = await shoeService.getOne(key);
+
+                if (shoeDetails._creator !== authData.email) {
+                    return false; // if the user shouldn't be able to edit/delete the entry, 'return false'
+                } else {
+                    return true; // if he is the creator, all is well, so 'return true'
+                }
+            } else {
+                return true; // if the person is Auth to view the page, 'return true'
+            }
+        }
+    } else if (nonAuthPages.includes(path)) { // if the page is a non-authorized one
+        // if the page is for non-Auth users, but the user is authorised, 'return false', for ex. for the login and register pages if the user has already logged in
+        if (authData.isAuthenticated === true) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 };
 
 const router = async (path) => {
@@ -30,6 +65,11 @@ const router = async (path) => {
 
     let templateData = authService.getAuthData();
     // console.log(`router -> ${JSON.stringify(templateData)}`);
+
+    let isAllowed = await validateAuthPages(path, templateData);
+    if (isAllowed === false) {
+        path = '/forbidden';
+    }
 
     if (['/', '/home', '/home/'].includes(path)) {
         if (templateData.isAuthenticated === true) Object.assign(templateData, {
@@ -44,13 +84,13 @@ const router = async (path) => {
             id = id.replace('/edit/', '').replace('/edit', '');
 
             path = '/edit';
-        }
-        /* else if (path.includes('/buy')) {
-                   id = id.replace('/buy/', '').replace('/buy', '');
-
-                   path = '/buy';
-               } */
-        else {
+        } else if (path.includes('/delete')) {
+            id = id.replace('/delete/', '').replace('/delete', '');
+            // path = `/details/${id}`;
+            // console.log('on delete');
+            shoeService.delete(id)
+                .then(res => res === null ? navigate('/') : alert(`Couldn't be deleted! Please try again later`));
+        } else {
             path = '/details';
         }
 
@@ -90,6 +130,9 @@ const router = async (path) => {
     let template = Handlebars.compile(templateHtml.innerHTML);
 
     app.innerHTML = template(templateData);
+
+    app.querySelector('div.mainbox') !== null ? document.body.classList.add('special-page') :
+        document.body.classList.remove('special-page'); // so that the CSS works correctly
 };
 
 const navigate = (path) => {

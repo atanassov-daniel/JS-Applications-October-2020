@@ -1,4 +1,4 @@
-export default request = async (url, method, body) => {
+export const request = async (url, method, body) => {
     let options = {
         method
     };

@@ -1,4 +1,7 @@
 import {
+    Router
+} from 'https://unpkg.com/@vaadin/router';
+import {
     html,
     render
 } from 'https://unpkg.com/lit-html?module';
@@ -49,7 +52,9 @@ export default class Register extends HTMLElement {
         login(email, password)
             .then(email => {
                 notify(`Successful Login`, 'success');
-                location.pathname = '/';
+                // location.pathname = '/';
+                Router.go('/');
+                // Router.go({ pathname: '/', });
             })
             .catch(err => notify(`Couldn't be logged in - ${err.message}`));
     }

@@ -1,7 +1,3 @@
-// import request from './request.js';
-
-// const databaseUrl = `https://movies-97242-default-rtdb.firebaseio.com`;
-
 export const register = async (email, password) => {
     try {
         let resp = await firebase.auth().createUserWithEmailAndPassword(email, password);

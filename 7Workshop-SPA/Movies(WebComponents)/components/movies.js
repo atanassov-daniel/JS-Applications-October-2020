@@ -2,10 +2,11 @@
 import {
     Router
 } from 'https://unpkg.com/@vaadin/router';
-import {
+/* import {
     html,
     render
-} from 'https://unpkg.com/lit-html?module';
+} from 'https://unpkg.com/lit-html?module'; */
+import { html, render } from '../node_modules/lit-html/lit-html.js';
 import {
     getAllMovies
 } from '../services/movieServices.js';

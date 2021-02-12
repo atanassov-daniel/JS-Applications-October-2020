@@ -1,10 +1,17 @@
 import {
     Router
 } from 'https://unpkg.com/@vaadin/router';
+/* import {
+    html,
+    render
+} from 'https://unpkg.com/lit-html?module'; */
 import {
     html,
     render
-} from 'https://unpkg.com/lit-html?module';
+} from '../node_modules/lit-html/lit-html.js';
+import {
+    handleAuthPages
+} from '../services/validatePage403.js';
 import {
     getAuthData
 } from '../services/authServices.js';
@@ -23,6 +30,8 @@ const validateInputFieldsAreNotEmpty = (...values) => {
 };
 
 const template = (onSubmit) => html `
+    <navigation-component></navigation-component>
+
     <form class="text-center border border-light p-5" @submit=${onSubmit}>
         <h1>Add Movie</h1>
         <div class="form-group">
@@ -72,6 +81,8 @@ export default class AddMovie extends HTMLElement {
     }
 
     render() {
+        handleAuthPages(location.pathname, this.user, this);
+        // .then();
         render(template(this.onSubmit), this, {
             eventContext: this
         });

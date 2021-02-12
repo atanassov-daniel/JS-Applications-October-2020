@@ -1,17 +1,20 @@
-import {
+/* import {
     html,
     render
-} from 'https://unpkg.com/lit-html?module';
+} from 'https://unpkg.com/lit-html?module'; */
+import { html, render } from '../node_modules/lit-html/lit-html.js';
 
 import {
     getAuthData
 } from '../services/authServices.js';
-import {
+/* import {
     navFunc
-} from './navFunc.js';
+} from './navFunc.js'; 
+
+<!-- ${navFunc(ctx.user)} --> */
 
 const template = (ctx) => html `
-    ${navFunc(ctx.user)}
+    <navigation-component></navigation-component>
 
     <div class="jumbotron jumbotron-fluid text-light" style="background-color: #343a40;">
         <img src="https://s.studiobinder.com/wp-content/uploads/2019/06/Best-M-Night-Shyamalan-Movies-and-Directing-Style-StudioBinder.jpg"

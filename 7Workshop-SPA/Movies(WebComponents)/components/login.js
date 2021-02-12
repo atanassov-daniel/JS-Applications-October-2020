@@ -1,15 +1,25 @@
 import {
     Router
 } from 'https://unpkg.com/@vaadin/router';
+/* import {
+    html,
+    render
+} from 'https://unpkg.com/lit-html?module'; */
 import {
     html,
     render
-} from 'https://unpkg.com/lit-html?module';
+} from '../node_modules/lit-html/lit-html.js';
 import {
+    handleAuthPages
+} from '../services/validatePage403.js';
+import {
+    getAuthData,
     login
 } from '../services/authServices.js';
 
 const template = (ctx) => html `
+    <navigation-component></navigation-component>
+
     <form class="text-center border border-light p-5" @submit=${ctx.onSubmit}>
         <div class="form-group">
             <label for="email">Email</label>
@@ -26,7 +36,12 @@ const template = (ctx) => html `
 
 export default class Register extends HTMLElement {
     connectedCallback() {
-        this.render();
+        firebase.auth().onAuthStateChanged((user) => {
+            this.user = getAuthData();
+
+            this.render();
+        });
+        // this.render();
     }
 
     onSubmit(e) {
@@ -60,6 +75,8 @@ export default class Register extends HTMLElement {
     }
 
     render() {
+        handleAuthPages(location.pathname, this.user, this)
+            // .then();
         render(template(this), this); // this points to the current component/element
         // , {eventContext:this}
     }

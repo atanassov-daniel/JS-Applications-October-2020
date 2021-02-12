@@ -25,13 +25,14 @@ export const getOneMovie = async (key, currentUserEmail) => { // getting only on
     // let hasAlreadyLiked = likes.includes(currentUserEmail);
 
     //! tази логика по-скоро трябва да отиде в самия компонент
-
-    return Object.assign(data, {
+    console.log(data);
+    return data;
+    /* return Object.assign(data, {
         // isCreator: data._creator === currentUserEmail,
         // hasAlreadyLiked,
         // likes,
         // likesCount: likes ? likes.length : 0
-    });
+    }); */
 };
 
 export const deleteMovie = async (key) => {

@@ -1,21 +1,28 @@
+/* import {
+    html,
+    render
+} from 'https://unpkg.com/lit-html?module'; */
+import { html, render } from '../node_modules/lit-html/lit-html.js';
 import {
-    html
-} from 'https://unpkg.com/lit-html?module';
+    getAuthData
+} from '../services/authServices.js';
 
-const template = (authData) => html `
+const template = ({
+    isAuthenticated,
+    email
+}) => html `
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
         <a class="navbar-brand text-light" href="/">Movies</a>
         <ul class="navbar-nav ml-auto">
-            ${authData.isAuthenticated ?
+            ${isAuthenticated ?
                 html`
                     <li class="nav-item">
-                        <a class="nav-link">Welcome, ${authData.email}</a>
+                        <a class="nav-link">Welcome, ${email}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/logout">Logout</a>
                     </li>
-                `
-                : html`
+                ` : html`
                     <li class="nav-item">
                         <a class="nav-link" href="/login">Login</a>
                     </li>
@@ -26,3 +33,21 @@ const template = (authData) => html `
             }
         </ul>
     </nav>`;
+
+export default class Navigation extends HTMLElement {
+    connectedCallback() {
+        this.user = getAuthData();
+
+        this.render();
+
+        firebase.auth().onAuthStateChanged((user) => {
+            this.user = getAuthData();
+
+            this.render();
+        });
+    }
+
+    render() {
+        render(template(this.user), this); // this points to the current component/element
+    }
+}

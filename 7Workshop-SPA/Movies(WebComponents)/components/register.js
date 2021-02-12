@@ -1,30 +1,40 @@
+/* import {
+    html,
+    render
+} from 'https://unpkg.com/lit-html?module'; */
 import {
     html,
     render
-} from 'https://unpkg.com/lit-html?module';
+} from '../node_modules/lit-html/lit-html.js';
 import {
+    handleAuthPages
+} from '../services/validatePage403.js';
+import {
+    getAuthData,
     register
 } from '../services/authServices.js';
 
 const template = (ctx) => html `
-<form class="text-center border border-light p-5" @submit=${ctx.onSubmit}>
-    <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" class="form-control" placeholder="Email" name="email" value="">
-    </div>
-    <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" class="form-control" placeholder="Password" name="password" value="">
-    </div>
+    <navigation-component></navigation-component>
 
-    <div class="form-group">
-        <label for="repeatPassword">Repeat Password</label>
-        <input type="password" class="form-control" placeholder="Repeat-Password" name="repeatPassword"
-            value="">
-    </div>
+    <form class="text-center border border-light p-5" @submit=${ctx.onSubmit}>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" placeholder="Email" name="email" value="">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" placeholder="Password" name="password" value="">
+        </div>
 
-    <button type="submit" class="btn btn-primary">Register</button>
-</form>
+        <div class="form-group">
+            <label for="repeatPassword">Repeat Password</label>
+            <input type="password" class="form-control" placeholder="Repeat-Password" name="repeatPassword"
+                value="">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
 `;
 
 export default class Register extends HTMLElement {
@@ -42,7 +52,12 @@ export default class Register extends HTMLElement {
     } */
 
     connectedCallback() {
-        this.render();
+        firebase.auth().onAuthStateChanged((user) => {
+            this.user = getAuthData();
+
+            this.render();
+        });
+        // this.render();
     }
 
     onSubmit(e) {
@@ -80,6 +95,8 @@ export default class Register extends HTMLElement {
     }
 
     render() {
+        handleAuthPages(location.pathname, this.user, this)
+            // .then();
         render(template(this), this); // this points to the current component/element
         // , {eventContext:this}
     }

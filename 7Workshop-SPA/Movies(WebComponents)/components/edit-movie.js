@@ -1,10 +1,17 @@
 import {
     Router
 } from 'https://unpkg.com/@vaadin/router';
+/* import {
+    html,
+    render
+} from 'https://unpkg.com/lit-html?module'; */
 import {
     html,
     render
-} from 'https://unpkg.com/lit-html?module';
+} from '../node_modules/lit-html/lit-html.js';
+import {
+    handleAuthPages
+} from '../services/validatePage403.js';
 import {
     getAuthData
 } from '../services/authServices.js';
@@ -31,6 +38,8 @@ const template = ({
         imageUrl
     }
 }) => html `
+    <navigation-component></navigation-component>
+
     <form class="text-center border border-light p-5" @submit=${onSubmit}>
         <h1>Edit Movie</h1>
         <div class="form-group">
@@ -63,7 +72,8 @@ export default class EditMovie extends HTMLElement {
                 description,
                 imageUrl,
             })
-            .then(data => Router.go(`/details/${data.name}`));
+            .then(data => Router.go(location.pathname.replace('/edit/', '').replace('/edit', '')));
+        // .then(data => Router.go(`/details/${data.name}`));
     }
 
     connectedCallback() {
@@ -83,6 +93,8 @@ export default class EditMovie extends HTMLElement {
             .then(movieData => {
                 this.movieData = movieData;
 
+                /* handleAuthPages(location.pathname, this.user, this)
+                    .then(); */
                 render(template(this), this, {
                     eventContext: this
                 });

@@ -1,10 +1,17 @@
 import {
     Router
 } from 'https://unpkg.com/@vaadin/router';
+/* import {
+    html,
+    render
+} from 'https://unpkg.com/lit-html?module'; */
 import {
     html,
     render
-} from 'https://unpkg.com/lit-html?module';
+} from '../node_modules/lit-html/lit-html.js';
+import {
+    handleAuthPages
+} from '../services/validatePage403.js';
 import {
     getAuthData
 } from '../services/authServices.js';
@@ -16,6 +23,11 @@ import {
 
 const getMovie = async (key, email) => {
     let movieData = await getOneMovie(key);
+
+    if (movieData === null) {
+        // render(html `<not-found></not-found>`, this);
+        return null;
+    }
 
     const likes = Object.values(movieData.likes || {});
     const hasAlreadyLiked = likes.includes(email);
@@ -35,6 +47,8 @@ const template = ({
     onLike,
     onDelete
 }) => html `
+    <navigation-component></navigation-component>
+    
     <div class="container">
         <div class="row bg-light text-dark">
             <h1>Movie title: ${movieData.title}</h1>
@@ -99,7 +113,15 @@ export default class MovieDetails extends HTMLElement {
     render() {
         getMovie(this.location.params.key, this.user.email)
             .then(movieData => {
+                if (movieData === null) {
+                    render(html `<not-found></not-found>`, this);
+                    return;
+                }
+
                 this.movieData = movieData;
+
+                handleAuthPages(location.pathname, this.user, this)
+                    .then();
 
                 render(template(this), this, {
                     eventContext: this

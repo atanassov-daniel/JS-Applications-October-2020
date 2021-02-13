@@ -1,12 +1,13 @@
 //! console.log(this.location.search);
 //TODO move the firebase.onAuthStateChanged() here and reload the page on a change; the render() function will have to do 'this.user = getAuthdata()' too
 
+// window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
+// window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
 
 
 import {
     Router
 } from 'https://unpkg.com/@vaadin/router';
-
 import {
     logout
 } from './services/authServices.js';
@@ -38,7 +39,12 @@ customElements.define('not-found', NotFound);
 const root = document.getElementById('root');
 const router = new Router(root);
 
-router.setRoutes([{
+router.setRoutes([
+    {
+        path: '/search',
+        component: 'home-component'
+    },
+    {
         path: '/',
         component: 'home-component'
     },

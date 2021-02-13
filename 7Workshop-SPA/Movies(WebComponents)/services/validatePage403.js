@@ -1,10 +1,13 @@
 // offerCreator, currentUserEmail
 // details, edit, delete
+import {
+    html,
+    render
+} from 'https://unpkg.com/lit-html?module';
 /* import {
     html,
     render
-} from 'https://unpkg.com/lit-html?module'; */
-import { html, render } from '../node_modules/lit-html/lit-html.js';
+} from '../node_modules/lit-html/lit-html.js'; */
 import {
     getOneMovie
 } from './movieServices.js';
@@ -24,8 +27,9 @@ export async function handleAuthPages(path, authData, componentThis) {
             } else {
                 // if the user tries to edit/delete an entry he isn't the creator of (as by writing '/edit' or '/delete' after the current pathname), 'return false'
                 if (path.includes('/edit')) {
+                    console.log('includes /edit/');
                     let key = path.replace('/details/', '').replace('/edit/', '').replace('/edit', '');
-
+                    console.log(`key: ${key}`);
                     let movieDetails = await getOneMovie(key);
 
                     if (movieDetails._creator !== authData.email) {

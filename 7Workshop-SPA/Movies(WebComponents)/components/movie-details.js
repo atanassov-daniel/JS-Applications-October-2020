@@ -1,14 +1,14 @@
 import {
     Router
 } from 'https://unpkg.com/@vaadin/router';
-/* import {
-    html,
-    render
-} from 'https://unpkg.com/lit-html?module'; */
 import {
     html,
     render
-} from '../node_modules/lit-html/lit-html.js';
+} from 'https://unpkg.com/lit-html?module';
+/* import {
+    html,
+    render
+} from '../node_modules/lit-html/lit-html.js'; */
 import {
     handleAuthPages
 } from '../services/validatePage403.js';
@@ -121,8 +121,7 @@ export default class MovieDetails extends HTMLElement {
                 this.movieData = movieData;
 
                 handleAuthPages(location.pathname, this.user, this)
-                    .then();
-
+                // .then();
                 render(template(this), this, {
                     eventContext: this
                 });

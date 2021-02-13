@@ -1,9 +1,11 @@
-/* import {
+import {
     html,
     render
-} from 'https://unpkg.com/lit-html?module'; */
-import { html, render } from '../node_modules/lit-html/lit-html.js';
-
+} from 'https://unpkg.com/lit-html?module';
+// import { html, render } from '../node_modules/lit-html/lit-html.js';
+import {
+    handleAuthPages
+} from '../services/validatePage403.js';
 import {
     getAuthData
 } from '../services/authServices.js';
@@ -46,6 +48,8 @@ export default class Home extends HTMLElement {
 
         // render(template(getAuthData()), this); // this points to the current component/element
         console.log(this.user);
+        handleAuthPages(location.pathname, this.user, this);
+        // .then();
         render(template(this), this); // this points to the current component/element
     }
 }

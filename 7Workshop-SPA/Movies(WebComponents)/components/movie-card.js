@@ -1,8 +1,8 @@
-/* import {
+import {
     html,
     render
-} from 'https://unpkg.com/lit-html?module'; */
-import { html, render } from '../node_modules/lit-html/lit-html.js';
+} from 'https://unpkg.com/lit-html?module';
+// import { html, render } from '../node_modules/lit-html/lit-html.js';
 
 const template = ({imageUrl, title, key}) => html `
     <div class="card mb-4">

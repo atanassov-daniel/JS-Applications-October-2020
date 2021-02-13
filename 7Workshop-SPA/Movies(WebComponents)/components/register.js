@@ -1,11 +1,11 @@
-/* import {
-    html,
-    render
-} from 'https://unpkg.com/lit-html?module'; */
 import {
     html,
     render
-} from '../node_modules/lit-html/lit-html.js';
+} from 'https://unpkg.com/lit-html?module';
+/* import {
+    html,
+    render
+} from '../node_modules/lit-html/lit-html.js'; */
 import {
     handleAuthPages
 } from '../services/validatePage403.js';
@@ -95,8 +95,8 @@ export default class Register extends HTMLElement {
     }
 
     render() {
-        handleAuthPages(location.pathname, this.user, this)
-            // .then();
+        handleAuthPages(location.pathname, this.user, this);
+        // .then();
         render(template(this), this); // this points to the current component/element
         // , {eventContext:this}
     }

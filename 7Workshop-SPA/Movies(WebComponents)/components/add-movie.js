@@ -1,14 +1,14 @@
 import {
     Router
 } from 'https://unpkg.com/@vaadin/router';
-/* import {
-    html,
-    render
-} from 'https://unpkg.com/lit-html?module'; */
 import {
     html,
     render
-} from '../node_modules/lit-html/lit-html.js';
+} from 'https://unpkg.com/lit-html?module';
+/* the submit functionality completely broke fro some reason when using this import {
+    html,
+    render
+} from '../node_modules/lit-html/lit-html.js'; */
 import {
     handleAuthPages
 } from '../services/validatePage403.js';

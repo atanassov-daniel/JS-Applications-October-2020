@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Components</title>
+    <script type="module">
+        import { html, render } from 'https://unpkg.com/lit-html?module';
+    </script>
+</head>
+
+<body>
+    <h2>App Heading</h2>
+
+    <card-component name="Superman">
+        <div slot="description">
+            <em>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta officiis harum
+                nobis dignissimos
+                nesciunt odio!</em>
+        </div>
+        <ul slot="superpowers">
+            <li>Flying</li>
+            <li>Super Strength</li>
+            <li>X-ray Vision</li>
+            <li>Cold Breath</li>
+        </ul>
+    </card-component>
+
+    <!-- <button is="fancy-button"></button> -->
+
+    <!-- <card-component name="Batman"><strong>Lorem ipsum dolor sit amet.</strong></card-component>
+    <card-component name="Wonder Woman">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, ducimus!
+    </card-component> -->
+
+    <!-- ! <template id="card-template">
+        <div class="card-content" style="background-color: lightgray; width:400px;">
+            <h2>Hello, world</h2>
+
+
+            <p>
+                Description: <slot name="description"></slot>
+            </p>
+
+            <h3>Superpowers: </h3>
+            <slot name="superpowers"></slot>
+
+            <button>Details</button>
+        </div>
+    </template> -->
+
+    <script type="module">
+        import { html, render } from 'https://unpkg.com/lit-html?module';
+
+        let template = ({ name, isliked }, handleClick) => html`
+                    <div class="card-content" style="background-color: lightgray; width:400px;">
+                        <h2>${name}</h2>
+                        ${isliked
+                ? html`${name} is a Hero!`
+                : html`${name} is a Villain!`
+            }
+
+                        <p>
+                            Description: <slot name="description"></slot>
+                        </p>
+
+                        <h3>Superpowers: </h3>
+                        <slot name="superpowers"></slot>
+
+                        <button @click=${handleClick}>Details</button>
+                    </div>`;
+
+        class CardComponent extends HTMLElement {
+            constructor() {
+                console.log('constructor');
+                super();
+
+                this.state = {
+                    // isliked: !!this.getAttribute('isliked') || false,
+                    name: this.getAttribute('name'),
+                }
+
+                this.attachShadow({ mode: 'open' });
+
+                this.handleClick = this.handleClick.bind(this);
+                // на метода handleClick в класа, му казваме да се презапише с нов метод, на който bind-ваме нов контекст - текущата инстанция на компонента
+
+                // render(template(this.state, this.handleClick), this.shadowRoot)
+                this.render(this.state)
+            }
+
+            /* static get getObservedAttributes() {
+                return ['isliked'];
+            } */
+
+            handleClick(e) {
+                console.log('handleClick function');
+                console.log(e);
+
+                this.shadowRoot.querySelector('div.card-content').setAttribute('isliked', 'true');
+                // тук this ще сочи към currentTarget-a на event-a, а ние не искаме това
+                this.render({ name: 'Clark Kent', isliked: true });
+            }
+
+            render(state) {
+                // render(template(this.state, this.handleClick), this.shadowRoot);
+                render(template(state, this.handleClick), this.shadowRoot);
+            }
+
+            /* attributeChangedCallback(name, oldValue, newValue) {
+                console.log(`${name}'s value has been changed 
+	                from ${oldValue} to ${newValue}`);
+            } */
+
+        }
+
+
+        window.customElements.define('card-component', CardComponent);
+    </script>
+</body>
+
+</html>

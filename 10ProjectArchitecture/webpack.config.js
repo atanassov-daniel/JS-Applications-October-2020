@@ -1,4 +1,5 @@
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   entry: './src/index.js',
@@ -10,6 +11,7 @@ module.exports = {
   devServer: {
     contentBase: './dist',
   },
+  plugins: [new MiniCssExtractPlugin()],
   module: {
     rules: [
       {
@@ -18,12 +20,25 @@ module.exports = {
         отговаря на това условие => ако файла, който импортваме, отговаря на това условие,
         използвай даден loader за него: */
         use: [
-          'style-loader', // взима от паметта това, което css-loader-a е произвел, и го слага като <style> tag директно вътре в html-a в header-a
-          'css-loader', // влиза в css файла, прочита всичкия css и го зарежда в паметта => само го извлича от css file-a
+          MiniCssExtractPlugin.loader,
+          /* ще екстратктне css-a в отделен файл => няма да седи накрая някъде динамично
+          забито в html-a nа страницата като в примера с 'style-loader',
+                ами ще се екстрактне като отделен файл */
+          'css-loader',
+          /* влиза в css файла, прочита всичкия css и го зарежда в паметта
+                => само го извлича от css file-a */
         ],
+      },
+      {
+        test: /index\.html$/i,
+        loader: 'file-loader',
+        options: {
+          name: '[path][name].[ext]',
+        },
+        /* with `npm start` a 'index.html' file doesn't apper in the 'dist' folder, but
+        everything still works correctly as if the file was there */
       },
     ],
   },
 };
-
 // "build": "webpack --watch"

@@ -33,7 +33,7 @@ module.exports = {
         test: /index\.html$/i,
         loader: 'file-loader',
         options: {
-          name: '[path][name].[ext]',
+          name: '[name].[ext]',
         },
         /* with `npm start` a 'index.html' file doesn't apper in the 'dist' folder, but
         everything still works correctly as if the file was there */

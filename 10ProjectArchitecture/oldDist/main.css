@@ -1,0 +1,12 @@
+.message-component-container li {
+    list-style-type: armenian;
+    /* list-style-type: none; */
+    color: red;
+}
+/* 
+li {
+    color: black;
+} */
+li {
+    font-style: italic;
+}

@@ -24,7 +24,7 @@ const template = (onSubmit) => html `
                 <!-- <img class="responsive-ideas create" src="../images/creativity_painted_face.jpg" alt=""> -->
                 <img class="responsive-ideas create" src="${image1}" alt="">
             </div>
-            <form class="form-idea col-md-5" @submit=${onSubmit.bind(this)}>
+            <form class="form-idea col-md-5" @submit=${onSubmit}>
                 <div class="text-center mb-4">
                     <h1 class="h3 mb-3 font-weight-normal">Share Your Idea</h1>
                 </div>
@@ -54,11 +54,28 @@ const template = (onSubmit) => html `
 export default class CreateIdeaComponent extends HTMLElement {
     onSubmit(e) {
         e.preventDefault();
-        console.log(this); //! with .bind(this) I think that it worked
+
+        console.log(this); // it pints to the form
+
         let [title, description, imageUrl] = [...document.querySelector('form').querySelectorAll('.form-control')].map(el => el.value);
 
         if ([title, description, imageUrl].some(el => el.trim() === '')) {
             alert("Please fill in all the required fields!");
+            return;
+        }
+
+        if (title.length < 6) {
+            alert("Title should be at least 6 characters long!");
+            return;
+        }
+
+        if (description.length < 6) {
+            alert("Title should be at least 6 characters long!");
+            return;
+        }
+
+        if (imageUrl.startsWith('http://') === false && imageUrl.startsWith('https://') === false) {
+            alert("The URL of the image should start with http:// or https://");
             return;
         }
 
@@ -68,15 +85,11 @@ export default class CreateIdeaComponent extends HTMLElement {
                 imageUrl,
                 // _creator: this.user.email
                 _creator: document.querySelector('create-idea').user.email
-            })
-            .then(data => Router.go(`/`));
+            }, document.querySelector('create-idea').user.uid)
+            .then(data => Router.go(`/dashboard`));
     }
 
     connectedCallback() {
-        this.user = getAuthData();
-
-        this.render();
-
         firebase.auth().onAuthStateChanged((user) => {
             this.user = getAuthData();
 
@@ -85,12 +98,10 @@ export default class CreateIdeaComponent extends HTMLElement {
     }
 
     render() {
-        console.log('%c render start', 'color: yellow');
-        console.log(this);
-        console.log('%c render end', 'color: red');
-        
-        render(template(this.onSubmit), this, {
-            eventContext: this
-        });
+        // console.log('%c render start', 'color: yellow');
+        // console.log(this);
+        // console.log('%c render end', 'color: red');
+        render(template(this.onSubmit), this);
+        // ,{ eventContext: this }
     }
 }

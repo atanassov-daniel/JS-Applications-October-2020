@@ -56,10 +56,14 @@ router.setRoutes([ //
         path: '/create-idea',
         component: 'create-idea'
     },
-    /* {
-        path: '/details/:id',
+    {
+        path: '/dashboard',
+        component: 'dashboard-comp'
+    },
+    {
+        path: '/details/:key',
         component: 'idea-details'
-    }, */
+    },
     {
         path: '(.*)',
         component: 'not-found'

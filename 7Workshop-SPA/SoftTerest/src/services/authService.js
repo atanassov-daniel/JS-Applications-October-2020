@@ -28,9 +28,10 @@ export const logout = async () => {
 
 export const getAuthData = () => {
     let currentUser = firebase.auth().currentUser;
-    console.log(currentUser?.email);
+    // console.log(currentUser?.email);
     return {
         isAuthenticated: currentUser ? true : false,
-        email: currentUser ? currentUser.email : null
+        email: currentUser ? currentUser.email : null,
+        uid: currentUser ? currentUser.uid : null
     };
 };

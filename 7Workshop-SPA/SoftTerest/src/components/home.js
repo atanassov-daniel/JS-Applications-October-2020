@@ -28,7 +28,7 @@ const template = (ctx) => html `
             </div>
         </div>
         <div class="bottom text-center">
-            <a class="btn btn-secondary btn-lg " href="">Get Started</a>
+            <a class="btn btn-secondary btn-lg " href="/dashboard">Get Started</a>
         </div>
     </div>
 `;

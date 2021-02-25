@@ -78,7 +78,7 @@ export default class LoginComponent extends HTMLElement {
 
         login(username.concat("@softterest.bg"), password)
             .then(email => {
-                Router.go('/');
+                Router.go('/dashboard');
             })
             .catch(err => alert(`Couldn't be logged in - ${err.message}`));
     }

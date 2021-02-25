@@ -3,8 +3,12 @@ import {
     render
 } from 'lit-html';
 import {
-    getAuthData
+    getAuthData,
+    logout
 } from '../services/authService';
+import {
+    Router
+} from '@vaadin/router';
 
 import image1 from '../../images/idea.png';
 
@@ -13,14 +17,24 @@ const template = ({
         isAuthenticated,
         email
     },
-    toggleNavBar
+    toggleNavBar,
+    logout
 }) => html `
     <nav class="navbar navbar-expand-lg navbar-light bg-light ">
         <div class="container">
-            <a class="navbar-brand" href="/">
-                <!-- <img src="./images/idea.png" alt="Go to Home Page"> -->
-                <img src="${image1}" alt="Go to Home Page">
-            </a>
+            ${isAuthenticated
+                ? html`
+                    <a class="navbar-brand" href="/dashboard">
+                        <!-- <img src="./images/idea.png" alt="Go to Home Page"> -->
+                        <img src="${image1}" alt="Go to Home Page">
+                    </a>
+                ` : html`
+                    <a class="navbar-brand" href="/">
+                        <!-- <img src="./images/idea.png" alt="Go to Home Page"> -->
+                        <img src="${image1}" alt="Go to Home Page">
+                    </a>
+                `
+            }
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
             aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" @click=${toggleNavBar}>
                 <span class="navbar-toggler-icon"></span>
@@ -37,7 +51,10 @@ const template = ({
                             <a class="nav-link" href="/create-idea">Create</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/logout">Logout</a>
+                            <a class="nav-link" href="/profile">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="" @click=${logout}>Logout</a>
                         </li>
                     ` : html`
                         <li class="nav-item">
@@ -56,10 +73,6 @@ const template = ({
 
 export default class NavBarComponent extends HTMLElement {
     connectedCallback() {
-        this.user = getAuthData();
-
-        this.render();
-
         firebase.auth().onAuthStateChanged((user) => {
             this.user = getAuthData();
 
@@ -77,5 +90,16 @@ export default class NavBarComponent extends HTMLElement {
         e.preventDefault();
 
         document.getElementById('navbarResponsive').classList.toggle('show');
+    }
+
+    logout(e) {
+        e.preventDefault();
+
+        logout()
+            .then(() => {
+                alert(`Successful logout`);
+                Router.go('/login');
+            })
+            .catch(err => alert(`Couldn't be logged out - ${err.message}`));
     }
 }

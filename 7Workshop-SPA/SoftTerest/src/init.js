@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import '../public/index.html';
 import './components';
 import {
+    getAuthData,
     logout
 } from './services/authService';
 /* 
@@ -40,7 +41,7 @@ router.setRoutes([ //
         path: '/register',
         component: 'register-comp'
     },
-    {
+/*     {
         path: '/logout',
         action: (context, commands) => {
             logout()
@@ -51,7 +52,7 @@ router.setRoutes([ //
 
             return commands.redirect('/login');
         }
-    },
+    }, */
     {
         path: '/create-idea',
         component: 'create-idea'
@@ -63,6 +64,10 @@ router.setRoutes([ //
     {
         path: '/details/:key',
         component: 'idea-details'
+    },
+    {
+        path: '/profile',
+        component: 'profile-page'
     },
     {
         path: '(.*)',

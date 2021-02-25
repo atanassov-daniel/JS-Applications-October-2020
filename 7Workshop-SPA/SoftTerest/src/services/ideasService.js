@@ -18,11 +18,19 @@ export const getOneIdea = async (key) => {
     return data;
 };
 
-export const createIdea = async (ideaData, uid) => {
+/* export const createIdea = async (ideaData, uid) => {
     let countCreatedIdeas = await request(`${databaseUrl}/users/${uid}/.json`, 'GET');
     await request(`${databaseUrl}/users/${uid}/.json`, 'PUT', (Number(countCreatedIdeas) || 0) + 1);
 
     let data = await request(`${databaseUrl}/ideas/.json`, 'POST', ideaData);
+
+    return data.name;
+}; */
+export const createIdea = async (ideaData, uid) => {
+    let data = await request(`${databaseUrl}/ideas/.json`, 'POST', ideaData);
+
+    await request(`${databaseUrl}/users/${uid}/.json`, 'POST', ideaData.title);
+    // иначе трябваше да паза ключа за идеята и за всяка идея да взимам всичкото инфо, и от него самото име
 
     return data.name;
 };
@@ -33,13 +41,23 @@ export const deleteIdea = async (key) => {
     return data;
 };
 
-/* export const likeIdea = async (key, currentUserEmail) => {
+export const getUsersIdeas = async (uid) => {
+    const data = await request(`${databaseUrl}/users/${uid}/.json`, 'GET');
+    const ideasTitles = Object.values(data || {});
+
+    return {
+        ideasCount: ideasTitles.length,
+        ideasTitles
+    };
+};
+
+export const likeIdea = async (key, currentUserEmail) => {
     let data = await request(`${databaseUrl}/ideas/${key}/likes/.json`, 'POST', currentUserEmail);
 
     return data;
 };
 
-export const commentIdea = async (key, currentUserEmail) => {
+/* export const commentIdea = async (key, currentUserEmail) => {
     let data = await request(`${databaseUrl}/ideas/${key}/likes/.json`, 'POST', currentUserEmail);
 
     return data;

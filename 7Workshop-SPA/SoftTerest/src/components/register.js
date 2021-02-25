@@ -80,6 +80,11 @@ export default class RegisterComponent extends HTMLElement {
             return;
         }
 
+        if (username.length < 3 || username.includes('@') === true) {
+            alert(`Username should be at least 3 characters long and shouldn't include a @`);
+            return;
+        }
+
         if (password !== repeatPassword) {
             alert(`Passwords don't match!`);
             return;
@@ -87,7 +92,7 @@ export default class RegisterComponent extends HTMLElement {
 
         register(username.concat("@softterest.bg"), password)
             .then(email => {
-                Router.go('/');
+                Router.go('/dashboard');
             })
             .catch(err => alert(`Couldn't be registered - ${err.message}`));
     }

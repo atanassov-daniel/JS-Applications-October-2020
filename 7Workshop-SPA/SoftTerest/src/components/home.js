@@ -4,6 +4,9 @@ import {
     render
 } from 'lit-html';
 import {
+    Router
+} from '@vaadin/router';
+import {
     getAuthData
 } from '../services/authService';
 
@@ -28,17 +31,25 @@ const template = (ctx) => html `
             </div>
         </div>
         <div class="bottom text-center">
-            <a class="btn btn-secondary btn-lg " href="/dashboard">Get Started</a>
+            <a class="btn btn-secondary btn-lg " href="/register">Get Started</a>
         </div>
     </div>
 `;
 
 export default class HomeComponent extends HTMLElement {
     connectedCallback() {
-        this.render();
+        firebase.auth().onAuthStateChanged((user) => {
+            this.user = getAuthData();
+
+            this.render();
+        });
     }
 
     render() {
-        render(template(this), this);
+        if (this.user.isAuthenticated === true) {
+            Router.go('/dashboard');
+        } else {
+            render(template(this), this);
+        }
     }
 }

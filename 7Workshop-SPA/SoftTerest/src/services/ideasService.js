@@ -54,11 +54,20 @@ export const getUsersIdeas = async (uid) => {
 export const likeIdea = async (key, currentUserEmail) => {
     let data = await request(`${databaseUrl}/ideas/${key}/likes/.json`, 'POST', currentUserEmail);
 
-    return data;
+    return data.name;
 };
 
-/* export const commentIdea = async (key, currentUserEmail) => {
-    let data = await request(`${databaseUrl}/ideas/${key}/likes/.json`, 'POST', currentUserEmail);
+export const commentIdea = async (key, commenterUsername, comment) => {
+    let data = await request(`${databaseUrl}/ideas/${key}/comments/.json`, 'POST', {
+        creator: commenterUsername,
+        comment
+    });
 
-    return data;
-}; */
+    console.log(key);
+    console.log({
+        creator: commenterUsername,
+        comment
+    });
+
+    return data.name;
+};

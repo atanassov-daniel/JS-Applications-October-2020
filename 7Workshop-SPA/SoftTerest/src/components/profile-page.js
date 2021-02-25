@@ -29,6 +29,7 @@ const template = ({
                 <p>Username: <small>${email.replace('@softterest.bg', '')}</small></p>
                 <p class="infoType">Has ${ideasCount} ideas =)</p>
                 ${ideasCount > 0
+                    // ? ideasTitles.map(title => html`<p>${title}</p>`)
                     ? ideasTitles.map(title => html`<p>${title}</p>`)
                     : html`<p>No ideas yet</p>`
                 }

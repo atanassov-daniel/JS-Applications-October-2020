@@ -33,6 +33,12 @@ export default class DashboardComponent extends HTMLElement {
         // loading
         getAllIdeas()
             .then(ideas => {
+                // sort the ideas by number of likes in descending order
+                ideas.sort((idea1, idea2) => {
+                    let bool = ((Object.values(idea2.likes || {}).length || 0) - (Object.values(idea1.likes || {}).length || 0));
+    
+                    return bool;
+                });
                 // remove loading
                 render(template(ideas), this);
             });

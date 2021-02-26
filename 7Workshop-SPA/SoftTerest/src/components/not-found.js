@@ -31,6 +31,9 @@ export default class NotFoundComponent extends HTMLElement {
     }
 
     render() {
+        document.getElementById('loading-spinner').style.display = 'block';
+
         render(template(), this);
+        document.getElementById('loading-spinner').style.display = 'none';
     }
 }

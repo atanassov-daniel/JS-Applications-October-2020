@@ -1,3 +1,4 @@
+//TODO  try to make the assets work, bootstrap-loader
 import '../../styles/login.css';
 import {
     Router
@@ -6,6 +7,9 @@ import {
     html,
     render
 } from 'lit-html';
+import {
+    handleAuthPages
+} from '../services/validatePage';
 import {
     getAuthData,
     register
@@ -18,7 +22,8 @@ const template = (onSubmit) => html `
         <div class="row-form d-md-flex flex-mb-equal ">
             <div class="col-md-4">
                 <!-- <img class="responsive" src="../images/idea.png" alt=""> -->
-                <img class="responsive" src="./images/idea.png" alt="">
+                <!-- src="./images/idea.png"  removing the '.' from './' fixes the problem where the image wouldn't load when the path is '/login/' with a '/' at the end, the bottom thing fixed it -->
+                <img class="responsive" src="/images/idea.png" alt="">
             </div>
             <form class="form-user col-md-7" @submit=${onSubmit}>
                 <div class="text-center mb-4">
@@ -98,6 +103,11 @@ export default class RegisterComponent extends HTMLElement {
     }
 
     render() {
+        document.getElementById('loading-spinner').style.display = 'block';
+
+        handleAuthPages(location.pathname, this.user, this);
+
         render(template(this.onSubmit), this);
+        document.getElementById('loading-spinner').style.display = 'none';
     }
 }

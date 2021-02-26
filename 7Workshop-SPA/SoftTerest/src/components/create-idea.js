@@ -7,6 +7,9 @@ import {
     Router
 } from '@vaadin/router';
 import {
+    handleAuthPages
+} from '../services/validatePage';
+import {
     getAuthData
 } from '../services/authService';
 import {
@@ -101,7 +104,11 @@ export default class CreateIdeaComponent extends HTMLElement {
         // console.log('%c render start', 'color: yellow');
         // console.log(this);
         // console.log('%c render end', 'color: red');
+        document.getElementById('loading-spinner').style.display = 'block';
+        handleAuthPages(location.pathname, this.user, this);
+
         render(template(this.onSubmit), this);
+        document.getElementById('loading-spinner').style.display = 'none';
         // ,{ eventContext: this }
     }
 }

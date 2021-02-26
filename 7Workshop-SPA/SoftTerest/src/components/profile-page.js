@@ -3,6 +3,9 @@ import {
     render
 } from 'lit-html';
 import {
+    handleAuthPages
+} from '../services/validatePage';
+import {
     getAuthData
 } from '../services/authService';
 import {
@@ -30,7 +33,7 @@ const template = ({
                 <p class="infoType">Has ${ideasCount} ideas =)</p>
                 ${ideasCount > 0
                     // ? ideasTitles.map(title => html`<p>${title}</p>`)
-                    ? ideasTitles.map(title => html`<p>${title}</p>`)
+                    ? ideasTitles.map(data => html`<p class="lead"><a href="/details/${data.key}">${data.title}</a></p>`)
                     : html`<p>No ideas yet</p>`
                 }
             </div>
@@ -48,13 +51,18 @@ export default class NavBarComponent extends HTMLElement {
     }
 
     render() {
+        document.getElementById('loading-spinner').style.display = 'block';
+
         getUsersIdeas(this.user.uid)
             .then(data => {
                 this.data = data;
 
+                handleAuthPages(location.pathname, this.user, this);
+
                 render(template(this), this, {
                     eventContext: this
                 });
+                document.getElementById('loading-spinner').style.display = 'none';
             });
     }
 }

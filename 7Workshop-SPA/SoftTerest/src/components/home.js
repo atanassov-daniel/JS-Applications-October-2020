@@ -7,6 +7,9 @@ import {
     Router
 } from '@vaadin/router';
 import {
+    handleAuthPages
+} from '../services/validatePage';
+import {
     getAuthData
 } from '../services/authService';
 
@@ -46,10 +49,15 @@ export default class HomeComponent extends HTMLElement {
     }
 
     render() {
+        document.getElementById('loading-spinner').style.display = 'block';
+
         if (this.user.isAuthenticated === true) {
             Router.go('/dashboard');
         } else {
+            handleAuthPages(location.pathname, this.user, this);
+
             render(template(this), this);
+            document.getElementById('loading-spinner').style.display = 'none';
         }
     }
 }

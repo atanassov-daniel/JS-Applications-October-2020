@@ -4,6 +4,9 @@ import {
     render
 } from 'lit-html';
 import {
+    handleAuthPages
+} from '../services/validatePage';
+import {
     getAuthData
 } from '../services/authService';
 import {
@@ -30,17 +33,21 @@ export default class DashboardComponent extends HTMLElement {
     }
 
     render() {
-        // loading
+        document.getElementById('loading-spinner').style.display = 'block';
+        
         getAllIdeas()
             .then(ideas => {
+                handleAuthPages(location.pathname, this.user, this);
+
                 // sort the ideas by number of likes in descending order
                 ideas.sort((idea1, idea2) => {
                     let bool = ((Object.values(idea2.likes || {}).length || 0) - (Object.values(idea1.likes || {}).length || 0));
-    
+
                     return bool;
                 });
-                // remove loading
+                
                 render(template(ideas), this);
+                document.getElementById('loading-spinner').style.display = 'none';
             });
     }
 }

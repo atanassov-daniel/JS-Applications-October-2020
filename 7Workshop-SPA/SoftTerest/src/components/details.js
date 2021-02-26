@@ -8,6 +8,9 @@ import {
     Router
 } from '@vaadin/router';
 import {
+    handleAuthPages
+} from '../services/validatePage';
+import {
     getAuthData
 } from '../services/authService';
 import {
@@ -116,14 +119,17 @@ export default class DetailsComponent extends HTMLElement {
     }
 
     render() {
-        const key = this.location.params.key;
+        document.getElementById('loading-spinner').style.display = 'block';
 
+        const key = this.location.params.key;
         getOneIdea(key)
             .then(ideaData => {
                 if (ideaData === null) {
                     render(html `<not-found></not-found>`, this);
                     return;
                 }
+
+                handleAuthPages(location.pathname, this.user, this);
 
                 const likes = Object.values(ideaData.likes || {});
                 const hasAlreadyLiked = likes.includes(this.user.email.replace('@softterest.bg', ''));
@@ -138,6 +144,7 @@ export default class DetailsComponent extends HTMLElement {
                 render(template(this), this, {
                     eventContext: this
                 });
+                document.getElementById('loading-spinner').style.display = 'none';
             });
     }
 }

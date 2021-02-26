@@ -7,6 +7,9 @@ import {
     render
 } from 'lit-html';
 import {
+    handleAuthPages
+} from '../services/validatePage';
+import {
     getAuthData,
     login
 } from '../services/authService';
@@ -19,7 +22,7 @@ const template = (onSubmit) => html `
             <div class="col-md-4">
                 <!-- <img class="responsive" src="../images/idea.png" alt=""> -->
                 <!-- why did it even work the above way -->
-                <img class="responsive" src="./images/idea.png" alt="">
+                <img class="responsive" src="/images/idea.png" alt="">
             </div>
             <form class="form-user col-md-7" @submit=${onSubmit}>
                 <div class="text-center mb-4">
@@ -84,6 +87,10 @@ export default class LoginComponent extends HTMLElement {
     }
 
     render() {
+        document.getElementById('loading-spinner').style.display = 'block';
+        handleAuthPages(location.pathname, this.user, this);
+
         render(template(this.onSubmit), this);
+        document.getElementById('loading-spinner').style.display = 'none';
     }
 }

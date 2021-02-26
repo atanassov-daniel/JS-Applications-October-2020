@@ -4,10 +4,10 @@ import {
 import 'bootstrap/dist/css/bootstrap.css';
 import '../public/index.html';
 import './components';
-import {
+/* import {
     getAuthData,
     logout
-} from './services/authService';
+} from './services/authService'; */
 /* 
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import firebase from "firebase/app";

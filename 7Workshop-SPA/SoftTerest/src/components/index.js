@@ -10,10 +10,10 @@ import CreateIdeaComponent from './create-idea';
 import IdeaCardComponent from './idea-card';
 import DashboardComponent from './dashboard';
 import DetailsComponent from './details';
-import UnauthorizedPageComponent from './unauthorized';
+import ForbiddenPageComponent from './forbidden';
 
 customElements.define('nav-bar', NavBarComponent);
-customElements.define('unauthorized-page', UnauthorizedPageComponent);
+customElements.define('forbidden-page', ForbiddenPageComponent);
 customElements.define('not-found', NotFoundComponent);
 customElements.define('home-comp', HomeComponent);
 customElements.define('register-comp', RegisterComponent);

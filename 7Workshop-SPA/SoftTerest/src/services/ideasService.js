@@ -27,9 +27,12 @@ export const getOneIdea = async (key) => {
     return data.name;
 }; */
 export const createIdea = async (ideaData, uid) => {
-    let data = await request(`${databaseUrl}/ideas/.json`, 'POST', ideaData);
+    const data = await request(`${databaseUrl}/ideas/.json`, 'POST', ideaData);
 
-    await request(`${databaseUrl}/users/${uid}/.json`, 'POST', ideaData.title);
+    await request(`${databaseUrl}/users/${uid}/.json`, 'POST', {
+        title: ideaData.title,
+        key: data.name
+    });
     // иначе трябваше да паза ключа за идеята и за всяка идея да взимам всичкото инфо, и от него самото име
 
     return data.name;

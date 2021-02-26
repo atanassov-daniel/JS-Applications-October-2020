@@ -19,7 +19,8 @@ almost to the bottom, but was now in its original size instead => I fixed the cs
 .responsive-ideas {
   width: 120%;
   max-width: 2000px;
-  height: 85%;
+  /* height: 85%; */
+  height: 86.6%;
   transform: translateX(-45px);
 }
 

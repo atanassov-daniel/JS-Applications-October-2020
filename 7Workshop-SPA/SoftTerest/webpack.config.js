@@ -6,7 +6,7 @@ module.exports = {
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
-    // assetModuleFilename: 'images/[hash][ext][query]',
+    assetModuleFilename: 'images/[name][ext]', //! otherwise the images went directly in the 'dist' folder with hashed names, and so the 'src' wasn't of any use and the images didn't load
     publicPath: '/' //!!!!!!! so that the images(background for the page in the common.css file) load using webpack V5 assets and not the in the above them example 'file-loader' from V4 (if using 'file-loader' instead I can just remove this current row for the publicPath)
     //!!!!!!!!!!!!!!!!!!!!!! // if I use path.resolve(__dirname, 'dist') for the publicPath, when starting the dev-server the `i ｢wds｣: webpack output is served from /` becomes `i ｢wds｣: webpack output is served from C:\\....` and only the static index.html file works
 
@@ -38,7 +38,7 @@ module.exports = {
           name: '[name].[ext]',
         },
       },
-      {
+      /* {
         //!!!!! otherwise I got a `Unexpected character '�' (1:0)` error when there was an import of a image as background for the page(in the common.css file)
         test: /\.(jpg|png|eps|svg)$/i,
         loader: 'file-loader',
@@ -48,11 +48,11 @@ module.exports = {
           // publicPath: path.resolve(__dirname, 'dist/images'),
           publicPath: '/',
         },
-      },
-      /* {
+      }, */
+      {
         test: /\.(jpg|png|eps|svg)$/i,
         type: 'asset/resource',
-      }, */
+      },
     ],
   },
 };

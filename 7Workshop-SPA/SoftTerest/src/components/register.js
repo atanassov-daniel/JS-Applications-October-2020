@@ -1,4 +1,4 @@
-//TODO  try to make the assets work, bootstrap-loader
+//TODO bootstrap-loader
 import '../../styles/login.css';
 import {
     Router
